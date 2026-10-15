@@ -1,0 +1,14 @@
+.avatar {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-family: var(--fonte-texto);
+  font-weight: 700;
+  color: var(--cor-branco-puro);
+}
+
+.contorno {
+  border: 2px solid var(--cor-azul-claro);
+}

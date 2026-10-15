@@ -1,0 +1,64 @@
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 12.5px 20px;
+  border-radius: var(--raio-botao);
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  font-size: 17.5px;
+  line-height: 25px;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    filter 0.15s ease;
+}
+
+.botao:active {
+  transform: translateY(4px);
+}
+
+.botao:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.primario {
+  border: 0;
+  background: var(--gradiente-cta);
+  color: var(--cor-branco-puro);
+  box-shadow: var(--sombra-botao-primario);
+}
+
+.primario:hover {
+  filter: brightness(1.05);
+}
+
+.primario:active {
+  box-shadow: 0 2px 0 var(--cor-laranja-sombra);
+}
+
+.secundario {
+  border: 1.25px solid var(--cor-laranja-sinergy);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--cor-laranja);
+  box-shadow: var(--sombra-botao-secundario);
+}
+
+.secundario:hover {
+  background: rgba(242, 101, 19, 0.06);
+}
+
+.secundario:active {
+  box-shadow: 0 2px 0 rgba(10, 55, 78, 0.18);
+}
+
+.icone {
+  display: inline-flex;
+}

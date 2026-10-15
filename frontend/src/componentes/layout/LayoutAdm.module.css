@@ -1,0 +1,146 @@
+.layout {
+  min-height: 100vh;
+  background: var(--cor-branco);
+}
+
+.principal {
+  margin-left: var(--largura-menu-adm);
+}
+
+.cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 64px;
+  padding: 0 24px 2px;
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 2px solid rgba(10, 55, 78, 0.12);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(6px);
+}
+
+.busca {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(306px, 100%);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: #cce0f2;
+  color: var(--cor-azul-escuro);
+}
+
+.busca input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--fonte-titulo);
+  font-size: 14px;
+  color: var(--cor-azul-escuro);
+  outline: none;
+}
+
+.busca input::placeholder {
+  color: #6b7280;
+}
+
+.busca:focus-within {
+  outline: 3px solid var(--cor-azul-claro);
+  outline-offset: 2px;
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.identificacao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-family: var(--fonte-titulo);
+}
+
+.nome {
+  font-size: 14px;
+  line-height: 14px;
+  color: #082f43;
+}
+
+.papel {
+  font-size: 10px;
+  line-height: 15px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #2a4d6a;
+}
+
+.conteudo {
+  padding: 32px 24px;
+}
+
+.barraMobile {
+  display: none;
+}
+
+.fundoMenu {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .principal {
+    margin-left: 0;
+  }
+
+  .barraMobile {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 12px 2px;
+    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 2px solid rgba(10, 55, 78, 0.12);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .cabecalho {
+    display: none;
+  }
+
+  .botaoMenu {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--cor-laranja-sinergy);
+    cursor: pointer;
+  }
+
+  .fundoMenu {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    border: 0;
+    background: rgba(10, 55, 78, 0.45);
+    cursor: pointer;
+  }
+
+  .conteudo {
+    padding: 24px var(--margem-lateral);
+  }
+}
