@@ -91,10 +91,10 @@ export default function PaginaCriarConta({ perfil = 'estudante' }) {
             rotulo="Nome de usuário"
             obrigatorio
             autoComplete="username"
-            autoCapitalize="none"
             value={dados.username}
             onChange={atualizar('username')}
             erro={errosCampos.username}
+            ajuda="É com ele que você entra. Pode ter espaços, letras, números e . _ - @"
           />
 
           <CampoTexto

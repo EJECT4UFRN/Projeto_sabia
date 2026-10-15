@@ -97,10 +97,8 @@ class EsqueciSenhaView(APIView):
     def post(self, request):
         serializer = EsqueciSenhaSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        login = serializer.validated_data["login"].strip()
-        filtro = {"email__iexact": login} if "@" in login else {"username__iexact": login}
-        usuario = Usuario.objects.filter(is_active=True, **filtro).exclude(email="").first()
-        if usuario:
+        usuario = Usuario.objects.buscar_por_login(serializer.validated_data["login"], is_active=True)
+        if usuario and usuario.email:
             self._enviar_link(usuario)
         return Response({"detalhe": self.MENSAGEM})
 

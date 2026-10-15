@@ -255,3 +255,52 @@ def test_redefinir_senha_com_token_falso(cliente, estudante):
     )
 
     assert resposta.status_code == 400
+
+
+# ---------------------------------------------------------------- nome de usuário com espaço
+
+
+@pytest.mark.django_db
+def test_cadastro_aceita_espaco_e_normaliza_espacos_extras(cliente):
+    resposta = cadastrar(cliente, username="  Ryan   Guilherme ")
+
+    assert resposta.status_code == 201
+    assert resposta.json()["usuario"]["username"] == "Ryan Guilherme"
+    assert resposta.json()["usuario"]["iniciais"] == "RG"
+
+
+@pytest.mark.django_db
+def test_cadastro_recusa_caracteres_especiais_com_mensagem_clara(cliente):
+    resposta = cadastrar(cliente, username="ryan#guilherme")
+
+    assert resposta.status_code == 400
+    assert resposta.json()["username"] == ["Use apenas letras, números, espaços e os caracteres @ . + - _"]
+
+
+@pytest.mark.django_db
+def test_nome_com_espaco_repetido_sem_diferenciar_maiusculas(cliente):
+    cadastrar(cliente, username="Ryan Guilherme")
+
+    resposta = cadastrar(cliente, username="ryan  guilherme")
+
+    assert resposta.status_code == 400
+    assert resposta.json()["username"] == ["Este nome de usuário já está em uso."]
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize("login", ["Ryan Guilherme", "ryan guilherme", " Ryan   Guilherme "])
+def test_entrar_com_nome_que_tem_espaco(cliente, login):
+    cadastrar(cliente, username="Ryan Guilherme")
+
+    resposta = cliente.post(reverse("entrar"), {"login": login, "senha": SENHA}, format="json")
+
+    assert resposta.status_code == 200
+
+
+@pytest.mark.django_db
+def test_entrar_com_usuario_que_tem_arroba_no_nome(cliente):
+    cadastrar(cliente, username="ryan@eject")
+
+    resposta = cliente.post(reverse("entrar"), {"login": "ryan@eject", "senha": SENHA}, format="json")
+
+    assert resposta.status_code == 200

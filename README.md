@@ -51,7 +51,8 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 - **Materiais:** PDF enviado como arquivo; vídeos e artigos como link.
 - **Login:** por nome de usuário ou e-mail (sem diferenciar maiúsculas). "Manter minha conta
   conectada" guarda a sessão por até 7 dias; desmarcado, ela some ao fechar o navegador.
-- **Cadastro:** nome de usuário único; e-mail opcional, mas único quando informado.
+- **Cadastro:** nome de usuário único, pode ter espaços ("Ryan Guilherme"); espaços repetidos
+  e nas pontas são removidos. E-mail opcional, mas único quando informado.
   Professores têm cadastro próprio.
 - **Esqueci minha senha:** link por e-mail, válido por 1 hora e de uso único. Contas sem
   e-mail não conseguem recuperar a senha sozinhas.

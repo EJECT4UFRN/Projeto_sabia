@@ -1,5 +1,33 @@
-from django.contrib.auth.models import AbstractUser
+import re
+
+from django.contrib.auth.models import AbstractUser, UserManager
+from django.core.validators import RegexValidator
 from django.db import models
+
+
+def normalizar_login(texto):
+    """Tira espaços das pontas e junta espaços repetidos ("  Ryan   Guilherme " → "Ryan Guilherme")."""
+    return re.sub(r"\s+", " ", texto or "").strip()
+
+
+class ValidadorNomeDeUsuario(RegexValidator):
+    # Como o padrão do Django, mas aceitando espaço entre as palavras (ex.: "Ryan Guilherme").
+    regex = r"^[\w.@+\- ]+\Z"
+    message = "Use apenas letras, números, espaços e os caracteres @ . + - _"
+    flags = 0
+
+
+class GerenciadorUsuario(UserManager):
+    def buscar_por_login(self, login, **filtros):
+        """Encontra a conta pelo nome de usuário ou pelo e-mail, sem diferenciar maiúsculas."""
+        login = normalizar_login(login)
+        if not login:
+            return None
+        if "@" in login:
+            por_email = self.filter(email__iexact=login, **filtros).exclude(email="").first()
+            if por_email:
+                return por_email
+        return self.filter(username__iexact=login, **filtros).first()
 
 
 class Usuario(AbstractUser):
@@ -23,12 +51,23 @@ class Usuario(AbstractUser):
         AZUL = "azul", "Azul"
         AZUL_ESCURO = "azul_escuro", "Azul escuro"
 
+    username_validator = ValidadorNomeDeUsuario()
+
+    username = models.CharField(
+        "nome de usuário",
+        max_length=150,
+        unique=True,
+        validators=[username_validator],
+        error_messages={"unique": "Este nome de usuário já está em uso."},
+    )
     email = models.EmailField("e-mail", blank=True)
     perfil = models.CharField(max_length=20, choices=Perfil.choices, default=Perfil.ESTUDANTE)
     cor_avatar = models.CharField(
         "cor do avatar", max_length=20, choices=CorAvatar.choices, default=CorAvatar.LARANJA_SINERGY
     )
     sobre_mim = models.TextField("sobre mim", blank=True)
+
+    objects = GerenciadorUsuario()
 
     class Meta:
         verbose_name = "usuário"

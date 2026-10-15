@@ -135,6 +135,20 @@ describe('Tela de criar conta', () => {
     expect(chamadas[0].corpo).toMatchObject({ username: 'novo_aluno', perfil: 'estudante' })
   })
 
+  it('aceita nome de usuário com espaço', async () => {
+    const usuario = userEvent.setup()
+    const chamadas = simularApi({ 'POST /auth/cadastro/': [201, { ...TOKENS, usuario: ESTUDANTE }] })
+    renderizarApp('/criar-conta')
+
+    await usuario.type(screen.getByLabelText(/Nome de usuário/), '  Ryan Guilherme ')
+    await usuario.type(screen.getByLabelText(/^Senha/), 'Sabia#Forte2026')
+    await usuario.type(screen.getByLabelText(/Confirmar senha/), 'Sabia#Forte2026')
+    await usuario.click(screen.getByRole('button', { name: 'Criar conta e jogar' }))
+
+    await screen.findByRole('heading', { name: 'Entre no jogo. Digite o PIN.' })
+    expect(chamadas[0].corpo.username).toBe('Ryan Guilherme')
+  })
+
   it('cria a conta de professor e leva para o painel', async () => {
     const usuario = userEvent.setup()
     const chamadas = simularApi({ 'POST /auth/cadastro/': [201, { ...TOKENS, usuario: PROFESSOR }] })

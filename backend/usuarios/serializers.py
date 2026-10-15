@@ -5,7 +5,7 @@ from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from rest_framework import serializers
 
-from .models import Usuario
+from .models import Usuario, normalizar_login
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class CadastroSerializer(_ConfirmacaoDeSenhaMixin, serializers.Serializer):
     perfil = serializers.ChoiceField(choices=Usuario.Perfil.choices, default=Usuario.Perfil.ESTUDANTE)
 
     def validate_username(self, valor):
-        valor = valor.strip()
+        valor = normalizar_login(valor)
         Usuario.username_validator(valor)
         if Usuario.objects.filter(username__iexact=valor).exists():
             raise serializers.ValidationError("Este nome de usuário já está em uso.")
@@ -81,9 +81,7 @@ class EntrarSerializer(serializers.Serializer):
     MENSAGEM_INVALIDO = "Usuário, e-mail ou senha incorretos."
 
     def validate(self, dados):
-        login = dados["login"].strip()
-        filtro = {"email__iexact": login} if "@" in login else {"username__iexact": login}
-        usuario = Usuario.objects.filter(**filtro).first()
+        usuario = Usuario.objects.buscar_por_login(dados["login"])
         # Mesma mensagem para usuário inexistente e senha errada, para não revelar quais contas existem.
         if usuario is None or not usuario.check_password(dados["senha"]) or not usuario.is_active:
             raise serializers.ValidationError(self.MENSAGEM_INVALIDO)
