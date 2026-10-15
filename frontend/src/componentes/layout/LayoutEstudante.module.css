@@ -18,3 +18,7 @@
     padding-bottom: calc(var(--altura-barra-inferior) + 32px);
   }
 }
+
+.telaCheia {
+  width: 100%;
+}

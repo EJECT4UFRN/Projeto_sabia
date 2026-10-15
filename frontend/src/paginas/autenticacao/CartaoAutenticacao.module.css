@@ -1,0 +1,124 @@
+/* Cartão branco usado em criar conta, esqueci minha senha e redefinir senha
+   (mockup "CRIAR CONTA - Desktop/Mobile - ESTUDANTE"). */
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.cartao {
+  display: flex;
+  width: 100%;
+  max-width: 884px;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+  background: var(--cor-branco-puro);
+  border: 2px solid rgba(10, 55, 78, 0.14);
+  border-radius: var(--raio-cartao);
+  box-shadow: 0 12px 17px rgba(10, 55, 78, 0.1);
+}
+
+.estreito {
+  max-width: 480px;
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sobretitulo {
+  margin: 0;
+  font-family: var(--fonte-texto);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #2a4d6a;
+}
+
+.titulo {
+  margin: 0;
+  font-family: var(--fonte-texto);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--cor-azul-escuro);
+}
+
+.texto {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #2a4d6a;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formulario > :last-child {
+  margin-top: 8px;
+}
+
+.convite {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #2a4d6a;
+  text-align: center;
+}
+
+.convite a {
+  margin-left: 4px;
+  font-weight: 700;
+  color: var(--cor-azul);
+  text-decoration: none;
+}
+
+.convite a:hover,
+.trocaDeArea a:hover {
+  text-decoration: underline;
+}
+
+.trocaDeArea {
+  margin: 24px 0 0;
+  font-size: 12px;
+  line-height: 17px;
+  color: #55707d;
+  text-align: center;
+}
+
+.trocaDeArea a {
+  font-weight: 700;
+  color: var(--cor-azul);
+  text-decoration: none;
+}
+
+.coincidem {
+  color: #1f9d57;
+}
+
+@media (max-width: 960px) {
+  .pagina {
+    padding-top: 0;
+  }
+
+  .cartao {
+    gap: 23px;
+    padding: 26px;
+    border-width: 1px;
+  }
+
+  .sobretitulo {
+    font-family: var(--fonte-titulo);
+    font-weight: 800;
+  }
+}

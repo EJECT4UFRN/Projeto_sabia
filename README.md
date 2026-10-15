@@ -21,8 +21,14 @@ docker compose up --build
 - API: http://localhost:8000/api/ (verificação: `/api/saude/`)
 - Admin do Django: http://localhost:8000/admin/
 
-Para criar um professor: `docker compose exec backend python manage.py createsuperuser` e,
-no admin, defina o perfil como "Professor".
+Contas de professor são criadas pelo próprio site em `/professor/criar-conta` (link
+"Administrador? Painel administrativo →" na tela de criar conta).
+
+### E-mail (recuperação de senha)
+
+Sem configuração, os e-mails de "Esqueci minha senha" são impressos no terminal do backend
+(`docker compose logs backend`), com o link pronto para abrir. Para enviar de verdade,
+preencha as variáveis `EMAIL_*` no `.env` (veja `.env.exemplo`).
 
 ## Rodando os testes
 
@@ -43,6 +49,24 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 - **Entrada pelo PIN:** com conta (a partida vai para o histórico) ou como convidado, só
   com apelido (nada fica salvo).
 - **Materiais:** PDF enviado como arquivo; vídeos e artigos como link.
+- **Login:** por nome de usuário ou e-mail (sem diferenciar maiúsculas). "Manter minha conta
+  conectada" guarda a sessão por até 7 dias; desmarcado, ela some ao fechar o navegador.
+- **Cadastro:** nome de usuário único; e-mail opcional, mas único quando informado.
+  Professores têm cadastro próprio.
+- **Esqueci minha senha:** link por e-mail, válido por 1 hora e de uso único. Contas sem
+  e-mail não conseguem recuperar a senha sozinhas.
+
+## API de autenticação (`/api/auth/`)
+
+| Método | Rota | O que faz |
+|---|---|---|
+| POST | `cadastro/` | Cria a conta (`perfil`: estudante ou professor) e devolve os tokens |
+| POST | `entrar/` | Login por usuário ou e-mail; devolve `access`, `refresh` e `usuario` |
+| POST | `renovar/` | Troca o `refresh` por um novo `access` |
+| POST | `sair/` | Invalida o `refresh` |
+| GET | `eu/` | Dados do usuário logado |
+| POST | `esqueci-senha/` | Envia o link de redefinição |
+| POST | `redefinir-senha/` | Define a nova senha com `uid` + `token` do link |
 
 ## Estrutura
 

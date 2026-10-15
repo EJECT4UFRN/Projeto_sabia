@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { useSessao } from '../../sessao/contexto'
 import { IconeBusca, IconeMenu } from '../icones/Icones'
 import Logo from '../marca/Logo'
 import Avatar from '../usuario/Avatar'
@@ -7,8 +8,15 @@ import estilos from './LayoutAdm.module.css'
 import MenuLateralAdm from './MenuLateralAdm'
 
 /** Estrutura do painel do professor: menu lateral fixo + cabeçalho com busca e perfil. */
-export default function LayoutAdm({ usuario, aoSair }) {
+export default function LayoutAdm() {
   const [menuAberto, setMenuAberto] = useState(false)
+  const { usuario, sair } = useSessao()
+  const navegar = useNavigate()
+
+  async function aoSair() {
+    await sair()
+    navegar('/professor/entrar', { replace: true })
+  }
 
   return (
     <div className={estilos.layout}>
@@ -46,10 +54,10 @@ export default function LayoutAdm({ usuario, aoSair }) {
           {usuario && (
             <div className={estilos.usuario}>
               <div className={estilos.identificacao}>
-                <span className={estilos.nome}>{usuario.nome}</span>
+                <span className={estilos.nome}>Prof. {usuario.nome}</span>
                 <span className={estilos.papel}>Administrador</span>
               </div>
-              <Avatar iniciais={usuario.iniciais} cor={usuario.corAvatar} tamanho={40} contorno />
+              <Avatar iniciais={usuario.iniciais} cor={usuario.cor_avatar} tamanho={40} contorno />
             </div>
           )}
         </header>

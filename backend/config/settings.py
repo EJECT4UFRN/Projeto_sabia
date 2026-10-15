@@ -19,7 +19,9 @@ def _lista(nome, padrao=""):
     return [item.strip() for item in os.environ.get(nome, padrao).split(",") if item.strip()]
 
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-inseguro-troque-em-producao")
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY", "dev-inseguro-troque-em-producao-chave-de-desenvolvimento-local"
+)
 DEBUG = _bool("DJANGO_DEBUG", True)
 ALLOWED_HOSTS = _lista("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,backend")
 
@@ -33,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     "channels",
     "usuarios",
@@ -118,15 +121,38 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    # Limite de tentativas nas rotas sensíveis (login, cadastro, recuperação de senha).
+    "DEFAULT_THROTTLE_RATES": {
+        "entrar": os.environ.get("LIMITE_ENTRAR", "10/min"),
+        "cadastro": os.environ.get("LIMITE_CADASTRO", "10/hour"),
+        "recuperar_senha": os.environ.get("LIMITE_RECUPERAR_SENHA", "5/hour"),
+    },
 }
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
 }
 
 CORS_ALLOWED_ORIGINS = _lista("CORS_ALLOWED_ORIGINS", "http://localhost:5173")
+
+# Endereço do frontend, usado para montar o link de redefinição de senha enviado por e-mail.
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5173").rstrip("/")
+
+# E-mail: em desenvolvimento as mensagens aparecem no terminal do backend.
+# Em produção, defina EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend e os dados do SMTP.
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = _bool("EMAIL_USE_TLS", True)
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "Sabiá <nao-responda@sabia.local>")
+
+# Validade do link de redefinição de senha (em segundos): 1 hora.
+PASSWORD_RESET_TIMEOUT = 60 * 60
 
 LANGUAGE_CODE = "pt-br"
 TIME_ZONE = "America/Sao_Paulo"
