@@ -24,20 +24,31 @@ function respostaJson(status, corpo) {
   )
 }
 
+function lerCorpo(corpo) {
+  if (!corpo) return undefined
+  if (corpo instanceof FormData) return Object.fromEntries(corpo.entries())
+  return JSON.parse(corpo)
+}
+
 /**
  * Substitui o fetch por respostas fixas por rota.
- * `rotas` mapeia "MÉTODO /caminho" para [status, corpo] ou para uma função (corpoEnviado) => [status, corpo].
+ * `rotas` mapeia "MÉTODO /caminho" (com ou sem a query string) para [status, corpo] ou para uma
+ * função (corpoEnviado, consulta) => [status, corpo]. Cada chamada fica registrada com
+ * { metodo, caminho, consulta, corpo, formulario }.
  */
 export function simularApi(rotas = {}) {
   const chamadas = []
   globalThis.fetch = vi.fn((url, opcoes = {}) => {
     const metodo = opcoes.method ?? 'GET'
-    const caminho = String(url).replace(/^\/api/, '')
-    const corpo = opcoes.body ? JSON.parse(opcoes.body) : undefined
-    chamadas.push({ metodo, caminho, corpo, cabecalhos: opcoes.headers })
-    const resposta = rotas[`${metodo} ${caminho}`]
-    if (!resposta) return respostaJson(404, { detail: `Rota não simulada: ${metodo} ${caminho}` })
-    const [status, dados] = typeof resposta === 'function' ? resposta(corpo) : resposta
+    const completo = String(url).replace(/^\/api/, '')
+    const [caminho, textoConsulta = ''] = completo.split('?')
+    const consulta = Object.fromEntries(new URLSearchParams(textoConsulta))
+    const corpo = lerCorpo(opcoes.body)
+    const formulario = opcoes.body instanceof FormData ? opcoes.body : undefined
+    chamadas.push({ metodo, caminho, consulta, corpo, formulario, cabecalhos: opcoes.headers })
+    const resposta = rotas[`${metodo} ${completo}`] ?? rotas[`${metodo} ${caminho}`]
+    if (!resposta) return respostaJson(404, { detail: `Rota não simulada: ${metodo} ${completo}` })
+    const [status, dados] = typeof resposta === 'function' ? resposta(corpo, consulta) : resposta
     return respostaJson(status, dados)
   })
   return chamadas

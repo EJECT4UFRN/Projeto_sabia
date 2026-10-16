@@ -4,6 +4,7 @@ import { useSessao } from '../../sessao/contexto'
 import { IconeBusca, IconeMenu } from '../icones/Icones'
 import Logo from '../marca/Logo'
 import Avatar from '../usuario/Avatar'
+import BarraInferiorAdm from './BarraInferiorAdm'
 import estilos from './LayoutAdm.module.css'
 import MenuLateralAdm from './MenuLateralAdm'
 
@@ -65,6 +66,7 @@ export default function LayoutAdm() {
         <main className={estilos.conteudo}>
           <Outlet />
         </main>
+        <BarraInferiorAdm />
       </div>
     </div>
   )

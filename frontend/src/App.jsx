@@ -5,6 +5,8 @@ import PaginaCriarConta from './paginas/autenticacao/PaginaCriarConta'
 import PaginaEntrar from './paginas/autenticacao/PaginaEntrar'
 import PaginaEsqueciSenha from './paginas/autenticacao/PaginaEsqueciSenha'
 import PaginaRedefinirSenha from './paginas/autenticacao/PaginaRedefinirSenha'
+import PaginaBancoPerguntas from './paginas/adm/perguntas/PaginaBancoPerguntas'
+import PaginaEditorPergunta from './paginas/adm/perguntas/PaginaEditorPergunta'
 import EmConstrucao from './paginas/EmConstrucao'
 import ProvedorSessao from './sessao/ProvedorSessao'
 import RotaProtegida from './sessao/RotaProtegida'
@@ -44,7 +46,9 @@ export function Rotas() {
       <Route element={<RotaProtegida perfil="professor" telaDeEntrar="/professor/entrar" />}>
         <Route path="/adm" element={<LayoutAdm />}>
           <Route index element={<EmConstrucao titulo="Dashboard" />} />
-          <Route path="perguntas" element={<EmConstrucao titulo="Banco de perguntas" />} />
+          <Route path="perguntas" element={<PaginaBancoPerguntas />} />
+          <Route path="perguntas/nova" element={<PaginaEditorPergunta />} />
+          <Route path="perguntas/:id/editar" element={<PaginaEditorPergunta />} />
           <Route path="quiz" element={<EmConstrucao titulo="Meus jogos" />} />
           <Route path="materiais" element={<EmConstrucao titulo="Materiais de estudo" />} />
         </Route>

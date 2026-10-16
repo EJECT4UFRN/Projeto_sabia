@@ -1,0 +1,37 @@
+.paginacao {
+  display: flex;
+  gap: 8px;
+}
+
+.botao {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 2px solid #c0d6ea;
+  border-radius: var(--raio-medio);
+  background: var(--cor-branco-puro);
+  box-shadow: 0 4px 0 rgba(10, 55, 78, 0.16);
+  font-family: var(--fonte-destaque);
+  font-size: 16px;
+  color: #2a4d6a;
+  cursor: pointer;
+}
+
+.botao:hover {
+  background: #f4f8fb;
+}
+
+.atual,
+.atual:hover {
+  border-color: var(--cor-azul);
+  background: var(--cor-azul);
+  font-weight: 800;
+  color: var(--cor-branco-puro);
+}
+
+.anterior svg {
+  transform: scaleX(-1);
+}

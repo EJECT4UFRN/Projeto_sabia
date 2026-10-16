@@ -84,22 +84,39 @@ describe('Painel do professor', () => {
     logarComo(PROFESSOR)
     renderizarApp('/adm')
 
-    expect(await screen.findByRole('link', { name: 'Dashboard' })).toHaveAttribute('aria-current', 'page')
-    expect(screen.getByRole('link', { name: 'Perguntas' })).not.toHaveAttribute('aria-current')
+    const menu = await screen.findByRole('complementary', { name: 'Menu do painel administrativo' })
+    expect(within(menu).getByRole('link', { name: 'Dashboard' })).toHaveAttribute('aria-current', 'page')
+    expect(within(menu).getByRole('link', { name: 'Perguntas' })).not.toHaveAttribute('aria-current')
     expect(screen.getByText('Prof. Állex Thierry')).toBeInTheDocument()
   })
 
   it('abre o menu lateral no mobile e fecha ao navegar', async () => {
     const usuario = userEvent.setup()
-    logarComo(PROFESSOR)
+    logarComo(PROFESSOR, {
+      'GET /perguntas/': [200, { count: 0, results: [] }],
+      'GET /categorias/': [200, []],
+    })
     renderizarApp('/adm')
 
     await usuario.click(await screen.findByRole('button', { name: 'Abrir menu' }))
     expect(screen.getByRole('button', { name: 'Fechar menu' })).toBeInTheDocument()
 
-    await usuario.click(screen.getByRole('link', { name: 'Perguntas' }))
+    const menu = screen.getByRole('complementary', { name: 'Menu do painel administrativo' })
+    await usuario.click(within(menu).getByRole('link', { name: 'Perguntas' }))
     expect(screen.queryByRole('button', { name: 'Fechar menu' })).not.toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Banco de perguntas' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Banco de Perguntas' })).toBeInTheDocument()
+  })
+
+  it('mostra a barra inferior do painel com o item da página atual', async () => {
+    logarComo(PROFESSOR, {
+      'GET /perguntas/': [200, { count: 0, results: [] }],
+      'GET /categorias/': [200, []],
+    })
+    renderizarApp('/adm/perguntas')
+
+    const barra = await screen.findByRole('navigation', { name: 'Navegação do painel' })
+    expect(within(barra).getByRole('link', { name: 'Perguntas' })).toHaveAttribute('aria-current', 'page')
+    expect(within(barra).getByRole('link', { name: 'Dashboard' })).not.toHaveAttribute('aria-current')
   })
 
   it('sair do painel encerra a sessão e volta para a tela de entrar do professor', async () => {

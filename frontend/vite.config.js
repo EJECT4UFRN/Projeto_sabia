@@ -9,6 +9,7 @@ export default defineConfig({
     // Dentro do Docker o backend responde pelo nome do serviço.
     proxy: {
       '/api': process.env.VITE_PROXY_API ?? 'http://localhost:8000',
+      '/media': process.env.VITE_PROXY_API ?? 'http://localhost:8000',
       '/ws': { target: process.env.VITE_PROXY_WS ?? 'ws://localhost:8000', ws: true },
     },
   },

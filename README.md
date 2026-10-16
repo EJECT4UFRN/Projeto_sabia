@@ -57,6 +57,17 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 - **Esqueci minha senha:** link por e-mail, válido por 1 hora e de uso único. Contas sem
   e-mail não conseguem recuperar a senha sozinhas.
 
+- **Banco de perguntas:** cada pergunta tem exatamente 4 alternativas (sem repetir) e uma
+  correta; imagem opcional (JPG, PNG, WEBP ou GIF, até 5 MB). Tempo limite (5 a 300 s) e
+  pontuação máxima (100 a 2000) são da própria pergunta e valem na partida; os do quiz só
+  servem de padrão para perguntas criadas dentro dele. Cada professor só vê as próprias
+  perguntas e categorias.
+- **Categoria x disciplina:** categoria é o tema da pergunta (ex.: Energia Solar), criada pelo
+  professor; disciplina é a matéria do quiz e dos materiais (ex.: Ciências). São listas separadas.
+- **Pergunta inativa:** não aparece para ser adicionada a novos quizzes, mas continua nos que
+  já a usam. Pergunta que já está em algum quiz pode ser editada, mas não excluída (essa trava
+  entra junto com os quizzes).
+
 ## API de autenticação (`/api/auth/`)
 
 | Método | Rota | O que faz |
@@ -68,6 +79,15 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 | GET | `eu/` | Dados do usuário logado |
 | POST | `esqueci-senha/` | Envia o link de redefinição |
 | POST | `redefinir-senha/` | Define a nova senha com `uid` + `token` do link |
+
+## API do banco de perguntas (só professores)
+
+| Método | Rota | O que faz |
+|---|---|---|
+| GET | `/api/perguntas/` | Lista paginada (10 por página). Filtros: `busca`, `categoria`, `dificuldade`, `ativa`, `pagina` |
+| POST | `/api/perguntas/` | Cria (JSON, ou multipart quando há `imagem`) |
+| GET/PATCH/DELETE | `/api/perguntas/<id>/` | Detalhe, edição (`remover_imagem=true` apaga a imagem) e exclusão |
+| GET/POST | `/api/categorias/` | Categorias do professor / "Nova categoria" |
 
 ## Estrutura
 

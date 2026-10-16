@@ -55,7 +55,9 @@ async function renovarAccess() {
  */
 export async function api(caminho, { metodo = 'GET', corpo, autenticar = true, jaRenovou = false } = {}) {
   const cabecalhos = { Accept: 'application/json' }
-  if (corpo !== undefined) cabecalhos['Content-Type'] = 'application/json'
+  // FormData (envio de arquivos) define o próprio Content-Type com o "boundary".
+  const ehFormulario = typeof FormData !== 'undefined' && corpo instanceof FormData
+  if (corpo !== undefined && !ehFormulario) cabecalhos['Content-Type'] = 'application/json'
   const tokens = obterTokens()
   if (autenticar && tokens?.access) cabecalhos.Authorization = `Bearer ${tokens.access}`
 
@@ -64,7 +66,7 @@ export async function api(caminho, { metodo = 'GET', corpo, autenticar = true, j
     resposta = await fetch(`${BASE}${caminho}`, {
       method: metodo,
       headers: cabecalhos,
-      body: corpo !== undefined ? JSON.stringify(corpo) : undefined,
+      body: corpo === undefined ? undefined : ehFormulario ? corpo : JSON.stringify(corpo),
     })
   } catch {
     throw new ErroApi(0, null)

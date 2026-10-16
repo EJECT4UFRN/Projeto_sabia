@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "channels",
     "usuarios",
+    "perguntas",
 ]
 
 MIDDLEWARE = [

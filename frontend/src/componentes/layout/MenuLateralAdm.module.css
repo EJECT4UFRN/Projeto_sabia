@@ -47,10 +47,13 @@
   color: var(--cor-branco-puro);
 }
 
-/* Estado ativo inferido a partir das telas do painel (item destacado em laranja). */
+/* Item ativo: gradiente laranja → amarelo com faixa amarela à esquerda (mockup do painel). */
 .ativo,
 .ativo:hover {
-  background: var(--cor-laranja-sinergy);
+  background: var(--gradiente-cta);
+  box-shadow: inset 4px 0 0 var(--cor-amarelo-solar);
+  font-family: var(--fonte-texto);
+  font-weight: 600;
   color: var(--cor-branco-puro);
 }
 
