@@ -10,6 +10,14 @@ estudantes entram pelo PIN (com conta ou como convidado) e respondem pelo celula
 
 Mockup de referência: Figma "Sabiá - Projeto Sinergy - EJECT".
 
+## Equipe
+
+| Papel | Nome |
+|---|---|
+| Scrum Master e PO | Carlos Gabriel |
+| Desenvolvedor fullstack | Ryan Guilherme |
+| UX/UI | Állex Thierry |
+
 ## Progresso
 
 Cada etapa tem um peso no frontend e no backend, pelo esforço estimado. A etapa só conta
@@ -20,17 +28,17 @@ quando está pronta, com testes e comparação com o mockup. O total é a média
 | 1. Estrutura base e layouts | 8% | 8% | ✅ Concluída |
 | 2. Autenticação (entrar, criar conta, recuperar senha) | 12% | 12% | ✅ Concluída |
 | 3. Banco de perguntas | 12% | 10% | ✅ Concluída |
-| 4. Quizzes (Meus jogos, editor, nova pergunta) | 13% | 11% | ✅ Concluída (aguardando aprovação) |
-| 5. Partida ao vivo (sala com PIN, perguntas, ranking) | 25% | 30% | ⏳ A fazer |
+| 4. Quizzes (Meus jogos, editor, nova pergunta) | 13% | 11% | ✅ Concluída |
+| 5. Partida ao vivo (sala com PIN, perguntas, ranking) | 25% | 30% | ✅ Concluída (aguardando aprovação) |
 | 6. Histórico e perfil | 12% | 10% | ⏳ A fazer |
 | 7. Materiais e disciplinas | 8% | 9% | ⏳ A fazer |
 | 8. Dashboard do professor | 10% | 10% | ⏳ A fazer |
 
 | Parte | Concluído | Falta |
 |---|---:|---:|
-| **Frontend** | **45%** | 55% |
-| **Backend** | **41%** | 59% |
-| **Total do projeto** | **43%** | 57% |
+| **Frontend** | **70%** | 30% |
+| **Backend** | **71%** | 29% |
+| **Total do projeto** | **71%** | 29% |
 
 ## Rodando com Docker
 
@@ -100,6 +108,26 @@ cd frontend && npm install && npm test && npm run lint && npm run build
   as perguntas também. Essas cópias não aparecem no banco e somem quando saem do quiz ou quando
   o quiz é excluído.
 
+- **Partida ao vivo:**
+  - O professor abre a sala de um quiz publicado e escolhe o limite de participantes (1 a 500,
+    padrão 50). Ele pode ter várias salas abertas ao mesmo tempo; cada uma tem um PIN de 6 números.
+  - O estudante entra pelo PIN (digitando ou pelo QR Code), logado ou como convidado, só com um
+    apelido. O apelido não pode repetir na mesma sala. Dá para entrar com o jogo já começado, sem
+    os pontos das perguntas que já passaram. Quem recarrega a página no mesmo aparelho volta com os
+    mesmos pontos.
+  - O professor pode tirar participantes da sala. O celular mostra a pergunta e as alternativas
+    com texto, cor e símbolo.
+  - Vale a primeira resposta. As respostas encerram quando o tempo acaba, quando todos responderam
+    ou quando o professor clica em "Encerrar respostas"; avançar é sempre com o professor.
+  - Pontuação: acerto vale de 100% (resposta na hora) a 50% (no último segundo) da pontuação da
+    pergunta, mais +100 por acerto seguido a partir do 2º (máximo +500 por pergunta). Erro ou falta
+    de resposta vale 0 e zera a sequência.
+  - Ranking parcial com os 5 primeiros no telão; cada estudante vê a própria posição. No fim, pódio
+    com os 3 primeiros e o resumo da partida. Sala cancelada antes de começar não conta como
+    partida realizada.
+  - As perguntas são copiadas para a partida ao abrir a sala (com a ordem sorteada, se o quiz pedir),
+    então editar ou excluir o quiz não afeta uma partida em andamento nem o histórico.
+
 ## API de autenticação (`/api/auth/`)
 
 | Método | Rota | O que faz |
@@ -131,6 +159,21 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 | GET | `/api/quizzes/disciplinas/` | Disciplinas já usadas (para o filtro) |
 | POST | `/api/quizzes/<id>/duplicar/` | Cópia em rascunho, com cópias das perguntas |
 | PATCH | `/api/quizzes/<id>/perguntas/<pergunta_id>/` | Lápis: edita a pergunta só neste quiz |
+
+## Partida ao vivo
+
+| Método | Rota | O que faz |
+|---|---|---|
+| POST | `/api/partidas/` | (professor) Abre a sala: `quiz`, `limite_participantes` |
+| GET | `/api/partidas/<id>/` | (professor) PIN e estado da sala |
+| POST | `/api/partidas/entrar/` | (qualquer um) Entra pelo `pin` com um `apelido`; devolve a `chave` |
+| WS | `/ws/partidas/<pin>/?token=<access>` | Telão do professor |
+| WS | `/ws/partidas/<pin>/?chave=<chave>` | Celular do estudante |
+
+Pelo WebSocket o servidor manda `{"tipo": "estado", ...}` a cada mudança (cada tela recebe só o
+que lhe cabe). O telão envia `{"acao": "iniciar" | "encerrar_respostas" | "mostrar_ranking" |
+"proxima" | "encerrar_partida" | "remover"}`; o estudante envia `{"acao": "responder", "letra": "A"}`
+ou `{"acao": "sair"}`.
 
 ## Estrutura
 

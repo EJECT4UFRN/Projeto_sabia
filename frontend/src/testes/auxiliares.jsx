@@ -72,3 +72,39 @@ export function renderizarApp(rota) {
     </MemoryRouter>,
   )
 }
+
+/**
+ * Troca o WebSocket do navegador por um falso. Devolve a lista de conexões abertas; cada uma tem
+ * `enviadas` (o que a tela mandou) e `receber(objeto)` (simula uma mensagem do servidor).
+ */
+export function simularWebSocket() {
+  const conexoes = []
+  class WebSocketFalso {
+    static OPEN = 1
+    constructor(url) {
+      this.url = url
+      this.readyState = 0
+      this.enviadas = []
+      conexoes.push(this)
+      queueMicrotask(() => {
+        this.readyState = 1
+        this.onopen?.()
+      })
+    }
+    send(texto) {
+      this.enviadas.push(JSON.parse(texto))
+    }
+    close() {
+      this.readyState = 3
+    }
+    receber(objeto) {
+      this.onmessage?.({ data: JSON.stringify(objeto) })
+    }
+    fechar(code) {
+      this.readyState = 3
+      this.onclose?.({ code })
+    }
+  }
+  globalThis.WebSocket = WebSocketFalso
+  return conexoes
+}

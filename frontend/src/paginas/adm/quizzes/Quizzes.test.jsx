@@ -286,7 +286,7 @@ describe('Editor de quiz', () => {
 
     await usuario.type(screen.getByRole('textbox', { name: 'Título *' }), '{Backspace}')
     await usuario.click(iniciar)
-    expect(await screen.findByRole('heading', { name: 'Sala da partida' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Abrir sala' })).toBeInTheDocument()
   })
 
   it('mostra erro ao não conseguir carregar o quiz', async () => {

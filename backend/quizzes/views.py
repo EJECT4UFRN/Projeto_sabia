@@ -41,7 +41,10 @@ class QuizViewSet(viewsets.ModelViewSet):
         if self.action != "list":
             return quizzes
 
-        quizzes = quizzes.annotate(perguntas_total=Count("itens")).order_by("-atualizado_em", "-id")
+        quizzes = quizzes.annotate(
+            perguntas_total=Count("itens", distinct=True),
+            partidas_realizadas=Count("partidas", filter=Q(partidas__estado="encerrada"), distinct=True),
+        ).order_by("-atualizado_em", "-id")
         filtros = self.request.query_params
 
         busca = " ".join(filtros.get("busca", "").split())

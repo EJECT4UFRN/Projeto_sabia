@@ -23,8 +23,7 @@ class QuizResumoSerializer(serializers.ModelSerializer):
     """Card da lista "Meus jogos"."""
 
     perguntas_total = serializers.IntegerField(read_only=True)
-    # Preenchido de verdade na etapa das partidas ao vivo.
-    partidas_realizadas = serializers.SerializerMethodField()
+    partidas_realizadas = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Quiz
@@ -40,9 +39,6 @@ class QuizResumoSerializer(serializers.ModelSerializer):
             "partidas_realizadas",
             "atualizado_em",
         )
-
-    def get_partidas_realizadas(self, quiz):
-        return 0
 
 
 class PerguntaDoQuizSerializer(PerguntaSerializer):
@@ -116,7 +112,8 @@ class QuizSerializer(serializers.ModelSerializer):
         return quiz.itens.count()
 
     def get_partidas_realizadas(self, quiz):
-        return 0
+        anotado = getattr(quiz, "partidas_realizadas", None)
+        return anotado if anotado is not None else quiz.partidas.filter(estado="encerrada").count()
 
     def validate_titulo(self, valor):
         valor = _juntar_espacos(valor)

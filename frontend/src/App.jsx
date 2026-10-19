@@ -10,6 +10,10 @@ import PaginaEditorPergunta from './paginas/adm/perguntas/PaginaEditorPergunta'
 import EmConstrucao from './paginas/EmConstrucao'
 import PaginaEditorQuiz from './paginas/adm/quizzes/PaginaEditorQuiz'
 import PaginaMeusJogos from './paginas/adm/quizzes/PaginaMeusJogos'
+import PaginaAbrirSala from './paginas/partida/PaginaAbrirSala'
+import PaginaEntrarPin from './paginas/partida/PaginaEntrarPin'
+import PaginaJogo from './paginas/partida/PaginaJogo'
+import PaginaTelao from './paginas/partida/PaginaTelao'
 import ProvedorSessao from './sessao/ProvedorSessao'
 import RotaProtegida from './sessao/RotaProtegida'
 
@@ -29,7 +33,7 @@ export function Rotas() {
         <Route path="/professor/criar-conta" element={<PaginaCriarConta perfil="professor" />} />
         <Route path="/esqueci-senha" element={<PaginaEsqueciSenha />} />
         <Route path="/redefinir-senha/:uid/:token" element={<PaginaRedefinirSenha />} />
-        <Route path="/entrar-pin" element={<EmConstrucao titulo="Entre no jogo. Digite o PIN." />} />
+        <Route path="/entrar-pin" element={<PaginaEntrarPin />} />
         <Route path="/como-funciona" element={<EmConstrucao titulo="Como funciona" />} />
         <Route path="/o-projeto" element={<EmConstrucao titulo="O projeto" />} />
       </Route>
@@ -44,6 +48,12 @@ export function Rotas() {
         </Route>
       </Route>
 
+      {/* Partida ao vivo: telas cheias, sem menu */}
+      <Route path="/jogo/:pin" element={<PaginaJogo />} />
+      <Route element={<RotaProtegida perfil="professor" telaDeEntrar="/professor/entrar" />}>
+        <Route path="/adm/partidas/:id" element={<PaginaTelao />} />
+      </Route>
+
       {/* Painel do professor */}
       <Route element={<RotaProtegida perfil="professor" telaDeEntrar="/professor/entrar" />}>
         <Route path="/adm" element={<LayoutAdm />}>
@@ -54,7 +64,7 @@ export function Rotas() {
           <Route path="quiz" element={<PaginaMeusJogos />} />
           <Route path="quiz/novo" element={<PaginaEditorQuiz />} />
           <Route path="quiz/:id/editar" element={<PaginaEditorQuiz />} />
-          <Route path="quiz/:id/partida" element={<EmConstrucao titulo="Sala da partida" />} />
+          <Route path="quiz/:id/partida" element={<PaginaAbrirSala />} />
           <Route path="materiais" element={<EmConstrucao titulo="Materiais de estudo" />} />
         </Route>
       </Route>
