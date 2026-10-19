@@ -14,3 +14,7 @@ export const pedirRedefinicaoDeSenha = (login) =>
 
 export const redefinirSenha = (dados) =>
   api('/auth/redefinir-senha/', { metodo: 'POST', corpo: dados, autenticar: false })
+
+export const atualizarPerfil = (dados) => api('/auth/eu/', { metodo: 'PATCH', corpo: dados })
+
+export const alterarSenha = (dados) => api('/auth/alterar-senha/', { metodo: 'POST', corpo: dados })

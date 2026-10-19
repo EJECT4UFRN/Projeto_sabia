@@ -1,0 +1,246 @@
+/* Material aberto (sem mockup): segue as cores e fontes de "Continue aprendendo". */
+
+.pagina {
+  display: flex;
+  max-width: 1104px;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+  font-family: var(--fonte-texto);
+  color: var(--cor-azul-escuro);
+}
+
+.voltar {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--cor-azul-claro);
+  text-decoration: none;
+}
+
+.voltar:hover {
+  text-decoration: underline;
+}
+
+.setaVoltar {
+  width: 6px;
+  height: 10px;
+  transform: scaleX(-1);
+}
+
+.material {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+  padding: 24px;
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco-puro);
+  box-shadow: 0 18px 50px rgba(10, 55, 78, 0.12);
+}
+
+.midia {
+  overflow: hidden;
+  border-radius: var(--raio-cartao);
+}
+
+.video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.linhaTipo {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: #55707d;
+}
+
+.tipo {
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--cor-laranja-sinergy);
+}
+
+.titulo {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.descricao {
+  margin: 0;
+  font-size: 16px;
+  line-height: 26px;
+  color: #55707d;
+}
+
+.professor {
+  margin: 0;
+  font-size: 13px;
+  color: #55707d;
+}
+
+.botaoPrincipal {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 14px 24px;
+  border-radius: var(--raio-cartao);
+  background: var(--cor-laranja-sinergy);
+  box-shadow: 0 5px 0 var(--cor-laranja-sombra);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--cor-branco-puro);
+  text-decoration: none;
+}
+
+.botaoPrincipal:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--cor-laranja-sombra);
+}
+
+.botaoPrincipal svg {
+  width: 6px;
+  height: 10px;
+}
+
+.tamanho {
+  font-weight: 500;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.linkExterno {
+  align-self: flex-start;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--cor-azul-claro);
+}
+
+.concluir {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.botaoConcluir {
+  align-self: flex-start;
+  padding: 12px 20px;
+  border: 2px solid var(--cor-azul);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco-puro);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--cor-azul);
+  cursor: pointer;
+}
+
+.botaoConcluir:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.feito {
+  border-color: #15803d;
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.dica {
+  margin: 0;
+  font-size: 13px;
+  color: #55707d;
+}
+
+.dica a {
+  font-weight: 700;
+  color: var(--cor-azul-claro);
+}
+
+.estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 24px;
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco-puro);
+  text-align: center;
+}
+
+.estadoTitulo {
+  margin: 0;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.estadoTexto {
+  max-width: 440px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 24px;
+  color: #55707d;
+}
+
+.botao {
+  margin-top: 8px;
+  padding: 10px 20px;
+  border: 2px solid var(--cor-azul);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco-puro);
+  font-family: var(--fonte-texto);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--cor-azul);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .material {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding: 16px;
+  }
+
+  .titulo {
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  .botaoPrincipal {
+    align-self: stretch;
+    justify-content: center;
+  }
+}

@@ -77,3 +77,27 @@
   transform: translateY(3px);
   box-shadow: 0 2px 0 #7a1300;
 }
+
+/* Laranja → amarelo (modal "Cadastrar disciplina") */
+.gradiente {
+  background: var(--gradiente-cta);
+  box-shadow: 0 5px 0 var(--cor-laranja-sombra);
+  color: var(--cor-branco-puro);
+}
+
+.gradiente:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--cor-laranja-sombra);
+}
+
+/* Borda azul-escura (Cancelar do modal de disciplina, "Selecionar imagem") */
+.contornoAzul {
+  padding: 12px 22px;
+  border: 2px solid var(--cor-azul);
+  background: var(--cor-branco-puro);
+  color: var(--cor-azul);
+}
+
+.contornoAzul:hover {
+  background: #f4f8fb;
+}

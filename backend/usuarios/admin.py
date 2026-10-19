@@ -8,4 +8,6 @@ from .models import Usuario
 class UsuarioAdmin(UserAdmin):
     list_display = ("username", "email", "perfil", "is_active", "date_joined")
     list_filter = ("perfil", "is_active")
-    fieldsets = UserAdmin.fieldsets + (("Sabiá", {"fields": ("perfil", "cor_avatar", "sobre_mim")}),)
+    fieldsets = UserAdmin.fieldsets + (
+        ("Sabiá", {"fields": ("perfil", "nome_exibicao", "cor_avatar", "sobre_mim")}),
+    )

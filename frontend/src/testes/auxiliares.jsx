@@ -9,7 +9,7 @@ export const ESTUDANTE = {
   nome: 'AllexThierry',
   email: 'allex@exemplo.com',
   perfil: 'estudante',
-  cor_avatar: 'laranja_sinergy',
+  cor_avatar: 'amarelo',
   iniciais: 'AL',
 }
 

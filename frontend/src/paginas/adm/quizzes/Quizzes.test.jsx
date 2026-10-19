@@ -6,6 +6,7 @@ const QUIZ_PUBLICADO = {
   id: 1,
   titulo: 'Sistema Solar',
   disciplina: 'Ciências',
+  disciplina_id: 3,
   turma: '',
   dificuldade: 'medio',
   status: 'publicado',
@@ -42,6 +43,7 @@ function quizCompleto(extras = {}) {
     titulo: 'Sistema Solar',
     descricao: '',
     disciplina: 'Ciências',
+    disciplina_id: 3,
     turma: '8º ano A',
     dificuldade: 'medio',
     tempo_padrao: 20,
@@ -59,7 +61,7 @@ function quizCompleto(extras = {}) {
 }
 
 const rotasBase = {
-  'GET /quizzes/disciplinas/': [200, ['Ciências']],
+  'GET /disciplinas/': [200, [{ id: 3, nome: 'Ciências' }]],
   'GET /perguntas/': [200, pagina([P1, P2])],
 }
 

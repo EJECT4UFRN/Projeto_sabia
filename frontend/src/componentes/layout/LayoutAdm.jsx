@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useSessao } from '../../sessao/contexto'
 import { IconeBusca, IconeMenu } from '../icones/Icones'
 import Logo from '../marca/Logo'
@@ -53,13 +53,13 @@ export default function LayoutAdm() {
           </label>
 
           {usuario && (
-            <div className={estilos.usuario}>
+            <Link to="/adm/perfil" className={estilos.usuario} aria-label="Meu perfil">
               <div className={estilos.identificacao}>
                 <span className={estilos.nome}>Prof. {usuario.nome}</span>
                 <span className={estilos.papel}>Administrador</span>
               </div>
               <Avatar iniciais={usuario.iniciais} cor={usuario.cor_avatar} tamanho={40} contorno />
-            </div>
+            </Link>
           )}
         </header>
 

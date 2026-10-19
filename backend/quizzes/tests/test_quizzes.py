@@ -3,6 +3,7 @@ import os
 import pytest
 from rest_framework.test import APIClient
 
+from escola.tests.auxiliares import disciplina
 from perguntas.models import Pergunta
 from perguntas.tests.test_perguntas import criar_pergunta, imagem_png
 from quizzes.models import Quiz, QuizPergunta
@@ -39,6 +40,8 @@ def perguntas(professor):
 
 
 def criar_quiz(dono, perguntas=(), **extras):
+    if isinstance(extras.get("disciplina"), str):
+        extras["disciplina"] = disciplina(dono, extras["disciplina"])
     quiz = Quiz.objects.create(dono=dono, titulo=extras.pop("titulo", "Energia limpa"), **extras)
     for ordem, pergunta in enumerate(perguntas, 1):
         QuizPergunta.objects.create(quiz=quiz, pergunta=pergunta, ordem=ordem)
@@ -71,16 +74,18 @@ def test_professor_so_ve_os_proprios_quizzes(cliente, professor, outro_professor
 # --- criar e editar -------------------------------------------------------------------------
 
 
-def test_cria_rascunho_com_perguntas_na_ordem(cliente, perguntas):
+def test_cria_rascunho_com_perguntas_na_ordem(cliente, professor, perguntas):
     ids = [perguntas[2].id, perguntas[0].id]
+    ciencias = disciplina(professor)
     resposta = cliente.post(
         URL,
-        {"titulo": "  Energia   solar ", "disciplina": " Ciências ", "perguntas_ids": ids},
+        {"titulo": "  Energia   solar ", "disciplina_id": ciencias.id, "perguntas_ids": ids},
         format="json",
     )
     assert resposta.status_code == 201, resposta.data
     assert resposta.data["titulo"] == "Energia solar"
     assert resposta.data["disciplina"] == "Ciências"
+    assert resposta.data["disciplina_id"] == ciencias.id
     assert resposta.data["status"] == "rascunho"
     assert [p["id"] for p in resposta.data["perguntas"]] == ids
     assert resposta.data["perguntas_total"] == 2
@@ -185,18 +190,24 @@ def test_filtros(cliente, professor):
         return sorted(q["titulo"] for q in cliente.get(URL, filtros).data["results"])
 
     assert titulos(busca="mate") == ["Frações"]
-    assert titulos(disciplina="CIÊNCIAS") == ["Sol", "Vento"]
+    assert titulos(disciplina=disciplina(professor, "Ciências").id) == ["Sol", "Vento"]
+    assert titulos(busca="CIÊN") == ["Sol", "Vento"]
     assert titulos(status="publicado") == ["Frações"]
     assert titulos(dificuldade="dificil") == ["Vento"]
     assert titulos(favorito="true") == ["Sol"]
 
 
-def test_lista_de_disciplinas_sem_repetir(cliente, professor):
-    criar_quiz(professor, disciplina="Ciências")
-    criar_quiz(professor, disciplina="ciências")
-    criar_quiz(professor, disciplina="Matemática")
-    criar_quiz(professor)
-    assert cliente.get(f"{URL}disciplinas/").data == ["Ciências", "Matemática"]
+def test_disciplina_de_outro_professor_nao_vale(cliente, outro_professor):
+    alheia = disciplina(outro_professor, "Artes")
+    resposta = cliente.post(URL, {"titulo": "Quiz", "disciplina_id": alheia.id}, format="json")
+    assert resposta.status_code == 400
+    assert resposta.data["disciplina_id"] == ["Essa disciplina não existe mais. Escolha outra."]
+
+
+def test_excluir_disciplina_deixa_quiz_sem_disciplina(cliente, professor):
+    quiz = criar_quiz(professor, disciplina="Ciências")
+    assert cliente.delete(f"/api/disciplinas/{quiz.disciplina_id}/").status_code == 204
+    assert cliente.get(f"{URL}{quiz.id}/").data["disciplina"] == ""
 
 
 # --- duplicar -------------------------------------------------------------------------------

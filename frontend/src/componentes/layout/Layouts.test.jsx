@@ -77,7 +77,7 @@ describe('Painel do professor', () => {
   it('não deixa estudante entrar no painel', async () => {
     logarComo(ESTUDANTE)
     renderizarApp('/adm')
-    expect(await screen.findByRole('heading', { name: 'Jogar' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Entre no jogo. Digite o PIN.' })).toBeInTheDocument()
   })
 
   it('destaca só o Dashboard na raiz do painel e mostra o professor', async () => {

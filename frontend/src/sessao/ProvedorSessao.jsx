@@ -49,9 +49,12 @@ export default function ProvedorSessao({ children }) {
     setUsuario(null)
   }, [])
 
+  // Depois de editar o perfil, a tela passa os dados novos para o resto do app.
+  const atualizarUsuario = useCallback((dados) => setUsuario(dados), [])
+
   const valor = useMemo(
-    () => ({ usuario, carregando, entrar, cadastrar, sair }),
-    [usuario, carregando, entrar, cadastrar, sair],
+    () => ({ usuario, carregando, entrar, cadastrar, sair, atualizarUsuario }),
+    [usuario, carregando, entrar, cadastrar, sair, atualizarUsuario],
   )
 
   return <ContextoSessao.Provider value={valor}>{children}</ContextoSessao.Provider>

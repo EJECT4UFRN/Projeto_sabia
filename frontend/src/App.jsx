@@ -14,6 +14,15 @@ import PaginaAbrirSala from './paginas/partida/PaginaAbrirSala'
 import PaginaEntrarPin from './paginas/partida/PaginaEntrarPin'
 import PaginaJogo from './paginas/partida/PaginaJogo'
 import PaginaTelao from './paginas/partida/PaginaTelao'
+import PaginaHistorico from './paginas/estudante/PaginaHistorico'
+import PaginaPerfil from './paginas/estudante/PaginaPerfil'
+import PaginaResumoPartida from './paginas/estudante/PaginaResumoPartida'
+import PaginaEditorMaterial from './paginas/adm/materiais/PaginaEditorMaterial'
+import PaginaMateriais from './paginas/adm/materiais/PaginaMateriais'
+import PaginaTurma from './paginas/adm/turmas/PaginaTurma'
+import PaginaTurmas from './paginas/adm/turmas/PaginaTurmas'
+import PaginaContinueAprendendo from './paginas/materiais/PaginaContinueAprendendo'
+import PaginaMaterial from './paginas/materiais/PaginaMaterial'
 import ProvedorSessao from './sessao/ProvedorSessao'
 import RotaProtegida from './sessao/RotaProtegida'
 
@@ -41,11 +50,17 @@ export function Rotas() {
       {/* Área de quem está logado (com barra inferior no mobile) */}
       <Route element={<RotaProtegida />}>
         <Route element={<LayoutEstudante comBarraInferior />}>
-          <Route path="/jogar" element={<EmConstrucao titulo="Jogar" />} />
-          <Route path="/historico" element={<EmConstrucao titulo="Meu histórico" />} />
-          <Route path="/perfil" element={<EmConstrucao titulo="Perfil" />} />
-          <Route path="/materiais" element={<EmConstrucao titulo="Continue aprendendo" />} />
+          <Route path="/jogar" element={<Navigate to="/entrar-pin" replace />} />
+          <Route path="/historico" element={<PaginaHistorico />} />
+          <Route path="/historico/:id" element={<PaginaResumoPartida />} />
+          <Route path="/perfil" element={<PaginaPerfil />} />
         </Route>
+      </Route>
+
+      {/* Materiais: abertos a visitantes (só os públicos); barra inferior para quem está logado */}
+      <Route element={<LayoutEstudante comBarraInferior="seLogado" />}>
+        <Route path="/materiais" element={<PaginaContinueAprendendo />} />
+        <Route path="/materiais/:id" element={<PaginaMaterial />} />
       </Route>
 
       {/* Partida ao vivo: telas cheias, sem menu */}
@@ -65,7 +80,12 @@ export function Rotas() {
           <Route path="quiz/novo" element={<PaginaEditorQuiz />} />
           <Route path="quiz/:id/editar" element={<PaginaEditorQuiz />} />
           <Route path="quiz/:id/partida" element={<PaginaAbrirSala />} />
-          <Route path="materiais" element={<EmConstrucao titulo="Materiais de estudo" />} />
+          <Route path="materiais" element={<PaginaMateriais />} />
+          <Route path="materiais/novo" element={<PaginaEditorMaterial />} />
+          <Route path="materiais/:id/editar" element={<PaginaEditorMaterial />} />
+          <Route path="turmas" element={<PaginaTurmas />} />
+          <Route path="turmas/:id" element={<PaginaTurma />} />
+          <Route path="perfil" element={<PaginaPerfil noPainel />} />
         </Route>
       </Route>
 

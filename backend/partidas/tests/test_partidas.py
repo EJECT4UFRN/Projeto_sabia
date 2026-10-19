@@ -4,6 +4,7 @@ import pytest
 from django.utils import timezone
 from rest_framework.test import APIClient
 
+from escola.tests.auxiliares import disciplina
 from partidas import jogo
 from partidas.models import Participante, Partida
 from perguntas.tests.test_perguntas import criar_pergunta
@@ -28,7 +29,7 @@ def cliente(professor):
 @pytest.fixture
 def quiz(professor):
     quiz = Quiz.objects.create(
-        dono=professor, titulo="Sistema Solar", disciplina="Ciências", status="publicado"
+        dono=professor, titulo="Sistema Solar", disciplina=disciplina(professor), status="publicado"
     )
     for ordem, texto in enumerate(["Planeta vermelho?", "Maior planeta?", "Anéis visíveis?"], 1):
         pergunta = criar_pergunta(professor, texto=texto, tempo_limite=20, pontuacao_maxima=1000)

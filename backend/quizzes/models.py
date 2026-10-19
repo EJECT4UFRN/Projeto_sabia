@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
+from escola.models import Disciplina
 from perguntas.models import (
     PONTUACAO_MAXIMA,
     PONTUACAO_MINIMA,
@@ -19,7 +20,7 @@ class Quiz(models.Model):
     Regras confirmadas:
     - só quiz publicado pode iniciar partida; para publicar precisa de ao menos 1 pergunta;
     - o quiz fica salvo e pode ser jogado quantas vezes o professor quiser, até ele excluir;
-    - disciplina e turma são texto livre (turma é opcional);
+    - a disciplina vem do cadastro de disciplinas do professor; turma é texto livre e opcional;
     - tempo e pontuação padrão só pré-preenchem perguntas criadas dentro do quiz;
     - embaralhar sorteia uma ordem nova a cada partida, a mesma para todos os estudantes.
     """
@@ -31,10 +32,9 @@ class Quiz(models.Model):
     dono = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="quizzes")
     titulo = models.CharField("título", max_length=120)
     descricao = models.CharField("descrição", max_length=500, blank=True)
-    disciplina = models.CharField(max_length=60, blank=True)
-    # Disciplina em minúsculas, para filtrar sem diferenciar "Ciências" de "ciências" (o SQLite
-    # não ignora maiúsculas em letras acentuadas).
-    disciplina_chave = models.CharField(max_length=60, blank=True, editable=False, db_index=True)
+    disciplina = models.ForeignKey(
+        Disciplina, on_delete=models.SET_NULL, null=True, blank=True, related_name="quizzes"
+    )
     turma = models.CharField(max_length=60, blank=True)
     dificuldade = models.CharField(
         max_length=10, choices=Pergunta.Dificuldade.choices, default=Pergunta.Dificuldade.MEDIO
@@ -60,12 +60,6 @@ class Quiz(models.Model):
     class Meta:
         ordering = ["-atualizado_em", "-id"]
         verbose_name_plural = "quizzes"
-
-    def save(self, *args, **kwargs):
-        self.disciplina_chave = self.disciplina.casefold()
-        if kwargs.get("update_fields") is not None and "disciplina" in kwargs["update_fields"]:
-            kwargs["update_fields"] = {*kwargs["update_fields"], "disciplina_chave"}
-        super().save(*args, **kwargs)
 
     @property
     def pode_iniciar(self):

@@ -29,16 +29,16 @@ quando está pronta, com testes e comparação com o mockup. O total é a média
 | 2. Autenticação (entrar, criar conta, recuperar senha) | 12% | 12% | ✅ Concluída |
 | 3. Banco de perguntas | 12% | 10% | ✅ Concluída |
 | 4. Quizzes (Meus jogos, editor, nova pergunta) | 13% | 11% | ✅ Concluída |
-| 5. Partida ao vivo (sala com PIN, perguntas, ranking) | 25% | 30% | ✅ Concluída (aguardando aprovação) |
-| 6. Histórico e perfil | 12% | 10% | ⏳ A fazer |
-| 7. Materiais e disciplinas | 8% | 9% | ⏳ A fazer |
+| 5. Partida ao vivo (sala com PIN, perguntas, ranking) | 25% | 30% | ✅ Concluída |
+| 6. Histórico e perfil | 12% | 10% | ✅ Concluída |
+| 7. Materiais, disciplinas e turmas | 8% | 9% | ✅ Concluída |
 | 8. Dashboard do professor | 10% | 10% | ⏳ A fazer |
 
 | Parte | Concluído | Falta |
 |---|---:|---:|
-| **Frontend** | **70%** | 30% |
-| **Backend** | **71%** | 29% |
-| **Total do projeto** | **71%** | 29% |
+| **Frontend** | **90%** | 10% |
+| **Backend** | **90%** | 10% |
+| **Total do projeto** | **90%** | 10% |
 
 ## Rodando com Docker
 
@@ -78,7 +78,7 @@ cd frontend && npm install && npm test && npm run lint && npm run build
   resposta; erro vale 0.
 - **Entrada pelo PIN:** com conta (a partida vai para o histórico) ou como convidado, só
   com apelido (nada fica salvo).
-- **Materiais:** PDF enviado como arquivo; vídeos e artigos como link.
+- **Materiais:** PDF, DOC ou DOCX enviado como arquivo (até 20 MB); vídeos e artigos como link.
 - **Login:** por nome de usuário ou e-mail (sem diferenciar maiúsculas). "Manter minha conta
   conectada" guarda a sessão por até 7 dias; desmarcado, ela some ao fechar o navegador.
 - **Cadastro:** nome de usuário único, pode ter espaços ("Ryan Guilherme"); espaços repetidos
@@ -99,8 +99,8 @@ cd frontend && npm install && npm test && npm run lint && npm run build
   responde 409; o campo `em_quizzes` diz em quantos quizzes ela está).
 - **Quizzes:** ficam salvos e podem ser jogados quantas vezes o professor quiser, até ele
   excluir. Só quiz **publicado** pode iniciar partida, e para publicar precisa de ao menos
-  1 pergunta. A estrela marca favorito e também serve de filtro. Disciplina e turma são texto
-  livre (turma opcional); dificuldade aparece no card e filtra a lista. Tempo e pontuação do
+  1 pergunta. A estrela marca favorito e também serve de filtro. A disciplina vem do cadastro de
+  disciplinas do professor (as que eram texto livre viraram cadastro); turma é texto livre e opcional; dificuldade aparece no card e filtra a lista. Tempo e pontuação do
   quiz só pré-preenchem perguntas novas. Embaralhar sorteia uma ordem nova a cada partida, a
   mesma para todos.
 - **Perguntas do quiz:** "Criar pergunta" dentro do quiz salva também no banco. O lápis numa
@@ -128,6 +128,32 @@ cd frontend && npm install && npm test && npm run lint && npm run build
   - As perguntas são copiadas para a partida ao abrir a sala (com a ordem sorteada, se o quiz pedir),
     então editar ou excluir o quiz não afeta uma partida em andamento nem o histórico.
 
+- **Histórico do estudante:** mostra só as partidas jogadas com a conta (convidado não tem
+  histórico); ficam de fora salas canceladas e participações de quem saiu ou foi removido.
+  "Partidas" conta todas, "Recorde" é a maior pontuação numa partida e "Pts totais" é a soma.
+  Lista de 10 em 10 ("Carregar mais"). Partida em curso volta para o jogo (de qualquer aparelho);
+  partida encerrada abre um resumo com posição, acertos e cada pergunta.
+- **Perfil:** nome de exibição (em branco usa o nome de usuário, que é o login e não muda), cor do
+  avatar (6 opções), e-mail (trocar pede a senha atual) e "sobre mim" (até 200 caracteres). Há
+  também "Alterar senha". O professor tem a mesma tela dentro do painel, sem histórico.
+- **Disciplinas:** cada professor tem as suas, sem repetir nome (sem diferenciar maiúsculas e
+  acentos digitados de outro jeito). São cadastradas pelo modal "Cadastrar disciplina" (no material
+  e no quiz). Disciplina com materiais não pode ser excluída; excluir deixa os quizzes sem disciplina.
+- **Turmas:** o professor cria a turma e coloca os alunos buscando por nome, usuário ou e-mail, ou
+  passa o código de 6 caracteres para o aluno entrar sozinho em Perfil → Minhas turmas. O aluno
+  pode sair da turma. "Gerar novo código" invalida o anterior.
+- **Quem vê cada material:** só materiais publicados. Marcado como **Público**, qualquer pessoa vê,
+  até sem conta; marcado para turmas, só os alunos delas. Para publicar é preciso escolher ao menos
+  uma turma ou "Público". "Todas as minhas turmas" marca as turmas que existem agora.
+- **Material:** tipos vídeo (link, duração opcional), documento (arquivo) e artigo (link, tempo de
+  leitura opcional). Vídeo do YouTube toca dentro do Sabiá e, sem capa, usa a imagem do vídeo. Capa
+  opcional (JPG, PNG ou WEBP até 5 MB). "Tirar do ar" volta para rascunho; excluir apaga arquivo e capa.
+- **Visualizações e concluído:** abrir o material conta 1 visualização por aluno logado (visitante
+  e o próprio professor não contam). Se o professor permitir, o aluno marca "Concluído" (e pode
+  desmarcar); o professor ainda não vê quem concluiu (fica para o dashboard).
+- **Continue aprendendo:** primeiro os materiais das disciplinas das partidas que o aluno jogou,
+  depois os mais novos. Busca por título, descrição ou disciplina e filtro por formato.
+
 ## API de autenticação (`/api/auth/`)
 
 | Método | Rota | O que faz |
@@ -136,7 +162,8 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 | POST | `entrar/` | Login por usuário ou e-mail; devolve `access`, `refresh` e `usuario` |
 | POST | `renovar/` | Troca o `refresh` por um novo `access` |
 | POST | `sair/` | Invalida o `refresh` |
-| GET | `eu/` | Dados do usuário logado |
+| GET/PATCH | `eu/` | Dados do usuário logado / edição do perfil (`email` exige `senha_atual`) |
+| POST | `alterar-senha/` | Troca a senha (`senha_atual`, `senha`, `confirmar_senha`) |
 | POST | `esqueci-senha/` | Envia o link de redefinição |
 | POST | `redefinir-senha/` | Define a nova senha com `uid` + `token` do link |
 
@@ -153,12 +180,47 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 
 | Método | Rota | O que faz |
 |---|---|---|
-| GET | `/api/quizzes/` | Lista paginada (6 por página). Filtros: `busca`, `disciplina`, `status`, `dificuldade`, `favorito=true`, `pagina` |
-| POST | `/api/quizzes/` | Cria; `perguntas_ids` define as perguntas e a ordem |
+| GET | `/api/quizzes/` | Lista paginada (6 por página). Filtros: `busca`, `disciplina` (id), `status`, `dificuldade`, `favorito=true`, `pagina` |
+| POST | `/api/quizzes/` | Cria; `perguntas_ids` define as perguntas e a ordem; `disciplina_id` vem do cadastro |
 | GET/PATCH/DELETE | `/api/quizzes/<id>/` | Detalhe (com `perguntas` completas e `pode_iniciar`), edição e exclusão |
-| GET | `/api/quizzes/disciplinas/` | Disciplinas já usadas (para o filtro) |
 | POST | `/api/quizzes/<id>/duplicar/` | Cópia em rascunho, com cópias das perguntas |
 | PATCH | `/api/quizzes/<id>/perguntas/<pergunta_id>/` | Lápis: edita a pergunta só neste quiz |
+
+## Disciplinas e turmas
+
+| Método | Rota | O que faz |
+|---|---|---|
+| GET/POST | `/api/disciplinas/` | (professor) Lista e cadastra disciplinas |
+| PATCH/DELETE | `/api/disciplinas/<id>/` | Renomeia; exclui (409 se tiver materiais) |
+| GET/POST | `/api/turmas/` | (professor) Lista (com `codigo` e `alunos_total`) e cria turmas |
+| GET/PATCH/DELETE | `/api/turmas/<id>/` | Detalhe com `alunos`, renomear e excluir |
+| POST | `/api/turmas/<id>/alunos/` | Adiciona um estudante: `aluno_id` |
+| DELETE | `/api/turmas/<id>/alunos/<aluno_id>/` | Tira o estudante da turma |
+| POST | `/api/turmas/<id>/novo_codigo/` | Troca o código da turma |
+| GET | `/api/alunos/?busca=` | (professor) Busca estudantes por nome, usuário ou e-mail (até 8) |
+| GET | `/api/minhas-turmas/` | (estudante) Turmas em que ele está |
+| POST | `/api/minhas-turmas/entrar/` | Entra com o `codigo` |
+| DELETE | `/api/minhas-turmas/<id>/` | Sai da turma |
+
+## Materiais de estudo
+
+| Método | Rota | O que faz |
+|---|---|---|
+| GET | `/api/materiais/` | (professor) Lista paginada (6). Filtros: `busca`, `disciplina` (id), `tipo`, `status`, `pagina` |
+| GET | `/api/materiais/resumo/` | Números do topo: publicados, rascunhos, vídeos, documentos, artigos |
+| POST | `/api/materiais/` | Cria (multipart): `titulo`, `descricao`, `disciplina`, `tipo`, `arquivo` ou `url`, `duracao` ("mm:ss"), `tempo_leitura`, `capa`, `publico`, `turmas_ids` ("1,2"), `status`, `permitir_concluir` |
+| GET/PATCH/DELETE | `/api/materiais/<id>/` | Detalhe, edição (também "Tirar do ar"/"Publicar" pelo `status`) e exclusão |
+| GET | `/api/estudo/` | (qualquer pessoa) "Continue aprendendo": `busca`, `tipo`, `pagina` |
+| GET | `/api/estudo/<id>/` | Abre o material e conta a visualização |
+| POST/DELETE | `/api/estudo/<id>/concluir/` | (logado) Marca ou desmarca como concluído |
+
+## Histórico do estudante
+
+| Método | Rota | O que faz |
+|---|---|---|
+| GET | `/api/historico/` | Resumo (`partidas`, `recorde`, `pontos_totais`) + partidas, 10 por página |
+| GET | `/api/historico/<id>/` | Resumo de uma partida encerrada, com cada pergunta |
+| POST | `/api/historico/<id>/retomar/` | Chave para voltar a uma partida em curso |
 
 ## Partida ao vivo
 
@@ -187,3 +249,6 @@ docker-compose.yml
 
 - A fonte **PP Telegraf** do mockup é comercial e não está no Google Fonts; o projeto cai
   para Outfit até a licença ser adicionada em `frontend/src/estilos/tokens.css`.
+- Os arquivos enviados (PDFs e capas) ficam em `backend/media/` e são servidos pelo Django só
+  com `DJANGO_DEBUG=true`. Em produção, eles precisam de um servidor de arquivos (ou de um
+  armazenamento como S3). Quem tiver o link do arquivo consegue abri-lo.

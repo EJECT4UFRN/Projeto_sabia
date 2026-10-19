@@ -1,6 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 
+from escola.models import Disciplina
 from perguntas.models import (
     PONTUACAO_MAXIMA,
     PONTUACAO_MINIMA,
@@ -19,9 +20,21 @@ def _juntar_espacos(texto):
     return " ".join((texto or "").split())
 
 
+class DisciplinaDoProfessorField(serializers.PrimaryKeyRelatedField):
+    default_error_messages = {
+        "does_not_exist": "Essa disciplina não existe mais. Escolha outra.",
+        "incorrect_type": "Escolha uma disciplina da lista.",
+    }
+
+    def get_queryset(self):
+        return Disciplina.objects.filter(dono=self.context["request"].user)
+
+
 class QuizResumoSerializer(serializers.ModelSerializer):
     """Card da lista "Meus jogos"."""
 
+    disciplina = serializers.CharField(source="disciplina.nome", read_only=True, default="")
+    disciplina_id = serializers.IntegerField(read_only=True)
     perguntas_total = serializers.IntegerField(read_only=True)
     partidas_realizadas = serializers.IntegerField(read_only=True)
 
@@ -31,6 +44,7 @@ class QuizResumoSerializer(serializers.ModelSerializer):
             "id",
             "titulo",
             "disciplina",
+            "disciplina_id",
             "turma",
             "dificuldade",
             "status",
@@ -54,6 +68,8 @@ class QuizSerializer(serializers.ModelSerializer):
         child=serializers.IntegerField(), write_only=True, required=False, allow_empty=True
     )
     perguntas = serializers.SerializerMethodField()
+    disciplina = serializers.CharField(source="disciplina.nome", read_only=True, default="")
+    disciplina_id = DisciplinaDoProfessorField(source="disciplina", allow_null=True, required=False)
     perguntas_total = serializers.SerializerMethodField()
     partidas_realizadas = serializers.SerializerMethodField()
     pode_iniciar = serializers.BooleanField(read_only=True)
@@ -83,6 +99,7 @@ class QuizSerializer(serializers.ModelSerializer):
             "titulo",
             "descricao",
             "disciplina",
+            "disciplina_id",
             "turma",
             "dificuldade",
             "tempo_padrao",
@@ -120,9 +137,6 @@ class QuizSerializer(serializers.ModelSerializer):
         if not valor:
             raise serializers.ValidationError("Dê um título para o quiz.")
         return valor
-
-    def validate_disciplina(self, valor):
-        return _juntar_espacos(valor)
 
     def validate_turma(self, valor):
         return _juntar_espacos(valor)

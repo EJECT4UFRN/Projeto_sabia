@@ -7,6 +7,7 @@ import estilos from './BotaoPainel.module.css'
  * "escuro": azul (Filtrar)
  * "contorno": borda azul-clara (Cancelar)
  * "perigo": vermelho (confirmar exclusão)
+ * "gradiente": laranja → amarelo; "contornoAzul": borda azul-escura
  */
 export default function BotaoPainel({ variante = 'primario', para, icone, children, className = '', ...resto }) {
   const classes = `${estilos.botao} ${estilos[variante]} ${className}`

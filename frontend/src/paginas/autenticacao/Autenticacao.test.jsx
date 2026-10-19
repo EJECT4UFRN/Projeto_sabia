@@ -19,7 +19,7 @@ describe('Tela de entrar', () => {
     await usuario.type(screen.getByLabelText('Senha'), 'Sabia#Forte2026')
     await usuario.click(screen.getByRole('button', { name: 'Entrar' }))
 
-    expect(await screen.findByRole('heading', { name: 'Jogar' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Entre no jogo. Digite o PIN.' })).toBeInTheDocument()
     expect(chamadas[0].corpo).toEqual({ login: 'AllexThierry', senha: 'Sabia#Forte2026' })
     // sem "manter conectado", o token fica só na sessão do navegador
     expect(JSON.parse(sessionStorage.getItem('sabia.tokens')).access).toBe('novo-acesso')
@@ -36,7 +36,7 @@ describe('Tela de entrar', () => {
     await usuario.click(screen.getByLabelText('Manter minha conta conectada'))
     await usuario.click(screen.getByRole('button', { name: 'Entrar' }))
 
-    await screen.findByRole('heading', { name: 'Jogar' })
+    await screen.findByRole('heading', { name: 'Entre no jogo. Digite o PIN.' })
     expect(JSON.parse(localStorage.getItem('sabia.tokens')).manterConectado).toBe(true)
   })
 
@@ -61,7 +61,7 @@ describe('Tela de entrar', () => {
     await usuario.type(screen.getByLabelText('Senha'), 'Sabia#Forte2026')
     await usuario.click(screen.getByRole('button', { name: 'Entrar' }))
 
-    expect(await screen.findByRole('heading', { name: 'Meu histórico' })).toBeInTheDocument()
+    expect(await screen.findByText('Meu histórico')).toBeInTheDocument()
   })
 
   it('mostra a mensagem da API quando os dados estão errados', async () => {
@@ -259,7 +259,7 @@ describe('Sessão', () => {
     })
     renderizarApp('/historico')
 
-    expect(await screen.findByRole('heading', { name: 'Meu histórico' })).toBeInTheDocument()
+    expect(await screen.findByText('Meu histórico')).toBeInTheDocument()
     expect(JSON.parse(sessionStorage.getItem('sabia.tokens'))).toMatchObject({ access: 'renovado', refresh: 'r2' })
   })
 

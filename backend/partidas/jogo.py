@@ -74,7 +74,7 @@ def abrir_sala(quiz, limite, request=None):
         professor=quiz.dono,
         quiz=quiz,
         titulo=quiz.titulo,
-        disciplina=quiz.disciplina,
+        disciplina=quiz.disciplina.nome if quiz.disciplina else "",
         pin=_gerar_pin(),
         limite_participantes=limite,
         perguntas=perguntas,
@@ -380,7 +380,7 @@ def _partida_publica(partida, ativos):
         "total_perguntas": len(partida.perguntas),
         "participantes": len(ativos),
         "limite": partida.limite_participantes,
-        "professor": partida.professor.get_full_name() or partida.professor.username,
+        "professor": partida.professor.nome,
         "quiz_id": partida.quiz_id,
     }
 

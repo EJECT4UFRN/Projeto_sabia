@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "perguntas",
     "quizzes",
     "partidas",
+    "escola",
+    "materiais",
 ]
 
 MIDDLEWARE = [

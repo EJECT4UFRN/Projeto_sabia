@@ -9,6 +9,7 @@ urlpatterns = [
     path("renovar/", TokenRefreshView.as_view(), name="renovar-token"),
     path("sair/", views.SairView.as_view(), name="sair"),
     path("eu/", views.EuView.as_view(), name="eu"),
+    path("alterar-senha/", views.AlterarSenhaView.as_view(), name="alterar-senha"),
     path("esqueci-senha/", views.EsqueciSenhaView.as_view(), name="esqueci-senha"),
     path("redefinir-senha/", views.RedefinirSenhaView.as_view(), name="redefinir-senha"),
 ]

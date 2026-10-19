@@ -16,13 +16,8 @@ import CabecalhoPagina from '../../../componentes/painel/CabecalhoPagina'
 import Modal from '../../../componentes/painel/Modal'
 import Paginacao from '../../../componentes/painel/Paginacao'
 import { DIFICULDADES } from '../../../componentes/painel/dificuldades'
-import {
-  duplicarQuiz,
-  excluirQuiz,
-  listarDisciplinas,
-  listarQuizzes,
-  salvarQuiz,
-} from '../../../servicos/quizzes'
+import { listarDisciplinas } from '../../../servicos/escola'
+import { duplicarQuiz, excluirQuiz, listarQuizzes, salvarQuiz } from '../../../servicos/quizzes'
 import estilos from './PaginaMeusJogos.module.css'
 
 const POR_PAGINA = 6
@@ -235,8 +230,8 @@ export default function PaginaMeusJogos() {
           onChange={(e) => mudarFiltro('disciplina', e.target.value)}
         >
           <option value="">Todas as disciplinas</option>
-          {disciplinas.map((nome) => (
-            <option key={nome} value={nome}>
+          {disciplinas.map(({ id, nome }) => (
+            <option key={id} value={String(id)}>
               {nome}
             </option>
           ))}

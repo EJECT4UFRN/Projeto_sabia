@@ -12,8 +12,6 @@ export const excluirQuiz = (id) => api(`/quizzes/${id}/`, { metodo: 'DELETE' })
 
 export const duplicarQuiz = (id) => api(`/quizzes/${id}/duplicar/`, { metodo: 'POST' })
 
-export const listarDisciplinas = () => api('/quizzes/disciplinas/')
-
 /** Lápis dentro do quiz: a mudança vale só para este quiz (o backend cria uma cópia se preciso). */
 export const editarPerguntaNoQuiz = (quizId, perguntaId, dados, arquivos) =>
   api(`/quizzes/${quizId}/perguntas/${perguntaId}/`, { metodo: 'PATCH', corpo: corpoPergunta(dados, arquivos) })
