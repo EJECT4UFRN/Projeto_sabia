@@ -4,10 +4,10 @@ import { IconeSetaMigalha } from '../icones/Icones'
 import estilos from './CabecalhoPagina.module.css'
 
 /**
- * Topo das telas do painel: migalhas, título, descrição e uma ação à direita.
+ * Topo das telas do painel: migalhas ou sobretítulo laranja, título, descrição e uma ação à direita.
  * `migalhas` é uma lista de { rotulo, para }; a última é a página atual (sem link).
  */
-export default function CabecalhoPagina({ migalhas = [], titulo, descricao, children }) {
+export default function CabecalhoPagina({ migalhas = [], sobretitulo, titulo, descricao, children }) {
   return (
     <header className={estilos.cabecalho}>
       <div className={estilos.textos}>
@@ -38,6 +38,7 @@ export default function CabecalhoPagina({ migalhas = [], titulo, descricao, chil
             </ol>
           </nav>
         )}
+        {sobretitulo && <p className={estilos.sobretitulo}>{sobretitulo}</p>}
         <h1 className={estilos.titulo}>{titulo}</h1>
         {descricao && <p className={estilos.descricao}>{descricao}</p>}
       </div>

@@ -90,3 +90,19 @@
     align-self: stretch;
   }
 }
+
+.sobretitulo {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  color: var(--cor-laranja-sinergy);
+}
+
+.sobretitulo + .titulo {
+  margin-top: 0;
+  font-size: 36px;
+  line-height: 40px;
+}

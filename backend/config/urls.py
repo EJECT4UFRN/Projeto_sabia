@@ -10,6 +10,7 @@ urlpatterns = [
     path("api/saude/", saude, name="saude"),
     path("api/auth/", include("usuarios.urls")),
     path("api/", include("perguntas.urls")),
+    path("api/", include("quizzes.urls")),
 ]
 
 if settings.DEBUG:

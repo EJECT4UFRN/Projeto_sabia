@@ -1,7 +1,7 @@
 import { api } from './api'
 
 /** Monta a query string ignorando filtros vazios. */
-function parametros(filtros = {}) {
+export function parametros(filtros = {}) {
   const busca = new URLSearchParams()
   Object.entries(filtros).forEach(([chave, valor]) => {
     if (valor !== undefined && valor !== null && valor !== '') busca.set(chave, valor)
@@ -18,19 +18,21 @@ export const buscarPergunta = (id) => api(`/perguntas/${id}/`)
  * Cria ou atualiza a pergunta. Com imagem nova (ou pedido de remoção) os dados vão como
  * formulário multipart; sem arquivo, vão como JSON.
  */
-export function salvarPergunta(id, dados, { imagem, removerImagem } = {}) {
+export function salvarPergunta(id, dados, arquivos = {}) {
   const caminho = id ? `/perguntas/${id}/` : '/perguntas/'
-  const metodo = id ? 'PATCH' : 'POST'
+  return api(caminho, { metodo: id ? 'PATCH' : 'POST', corpo: corpoPergunta(dados, arquivos) })
+}
 
-  if (!imagem && !removerImagem) return api(caminho, { metodo, corpo: dados })
-
+/** JSON quando não há arquivo; formulário multipart quando há imagem nova ou remoção. */
+export function corpoPergunta(dados, { imagem, removerImagem } = {}) {
+  if (!imagem && !removerImagem) return dados
   const formulario = new FormData()
   Object.entries(dados).forEach(([chave, valor]) => {
     formulario.append(chave, valor === null || valor === undefined ? '' : String(valor))
   })
   if (imagem) formulario.append('imagem', imagem)
   if (removerImagem) formulario.append('remover_imagem', 'true')
-  return api(caminho, { metodo, corpo: formulario })
+  return formulario
 }
 
 export const excluirPergunta = (id) => api(`/perguntas/${id}/`, { metodo: 'DELETE' })

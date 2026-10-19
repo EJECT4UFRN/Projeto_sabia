@@ -8,6 +8,8 @@ import PaginaRedefinirSenha from './paginas/autenticacao/PaginaRedefinirSenha'
 import PaginaBancoPerguntas from './paginas/adm/perguntas/PaginaBancoPerguntas'
 import PaginaEditorPergunta from './paginas/adm/perguntas/PaginaEditorPergunta'
 import EmConstrucao from './paginas/EmConstrucao'
+import PaginaEditorQuiz from './paginas/adm/quizzes/PaginaEditorQuiz'
+import PaginaMeusJogos from './paginas/adm/quizzes/PaginaMeusJogos'
 import ProvedorSessao from './sessao/ProvedorSessao'
 import RotaProtegida from './sessao/RotaProtegida'
 
@@ -49,7 +51,10 @@ export function Rotas() {
           <Route path="perguntas" element={<PaginaBancoPerguntas />} />
           <Route path="perguntas/nova" element={<PaginaEditorPergunta />} />
           <Route path="perguntas/:id/editar" element={<PaginaEditorPergunta />} />
-          <Route path="quiz" element={<EmConstrucao titulo="Meus jogos" />} />
+          <Route path="quiz" element={<PaginaMeusJogos />} />
+          <Route path="quiz/novo" element={<PaginaEditorQuiz />} />
+          <Route path="quiz/:id/editar" element={<PaginaEditorQuiz />} />
+          <Route path="quiz/:id/partida" element={<EmConstrucao titulo="Sala da partida" />} />
           <Route path="materiais" element={<EmConstrucao titulo="Materiais de estudo" />} />
         </Route>
       </Route>

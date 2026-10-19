@@ -1,7 +1,8 @@
-from django.db.models import Q
-from rest_framework import mixins, viewsets
+from django.db.models import Count, Q
+from rest_framework import mixins, status, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+from rest_framework.response import Response
 
 from usuarios.permissoes import EhProfessor
 
@@ -43,7 +44,13 @@ class PerguntaViewSet(viewsets.ModelViewSet):
     parser_classes = [JSONParser, MultiPartParser, FormParser]
 
     def get_queryset(self):
-        perguntas = Pergunta.objects.filter(dono=self.request.user).select_related("categoria")
+        # Cópias exclusivas de quiz (no_banco=False) só são vistas e editadas pelo quiz.
+        perguntas = (
+            Pergunta.objects.filter(dono=self.request.user, no_banco=True)
+            .select_related("categoria")
+            .annotate(em_quizzes=Count("usos"))
+            .order_by("-atualizada_em", "-id")
+        )
         filtros = self.request.query_params
 
         busca = " ".join(filtros.get("busca", "").split())
@@ -64,9 +71,13 @@ class PerguntaViewSet(viewsets.ModelViewSet):
 
         return perguntas
 
-    def perform_destroy(self, pergunta):
-        # Regra confirmada: pergunta que já está em algum quiz não pode ser excluída
-        # (deve ser inativada). A verificação entra junto com o app de quizzes.
-        if pergunta.imagem:
-            pergunta.imagem.delete(save=False)
-        pergunta.delete()
+    def destroy(self, request, *args, **kwargs):
+        # Regra confirmada: pergunta que já está em algum quiz não pode ser excluída, só desativada.
+        pergunta = self.get_object()
+        if pergunta.usos.exists():
+            return Response(
+                {"detail": "Esta pergunta está em um ou mais quizzes. Desative-a em vez de excluir."},
+                status=status.HTTP_409_CONFLICT,
+            )
+        pergunta.excluir_com_imagem()
+        return Response(status=status.HTTP_204_NO_CONTENT)

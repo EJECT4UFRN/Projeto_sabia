@@ -63,6 +63,7 @@ class PerguntaSerializer(serializers.ModelSerializer):
     )
     imagem = serializers.ImageField(required=False, allow_null=True)
     remover_imagem = serializers.BooleanField(write_only=True, required=False, default=False)
+    em_quizzes = serializers.SerializerMethodField()
 
     class Meta:
         model = Pergunta
@@ -79,6 +80,7 @@ class PerguntaSerializer(serializers.ModelSerializer):
             "imagem",
             "remover_imagem",
             "ativa",
+            "em_quizzes",
             "criada_em",
             "atualizada_em",
         )
@@ -96,6 +98,11 @@ class PerguntaSerializer(serializers.ModelSerializer):
                 for campo in CAMPOS_ALTERNATIVAS
             },
         }
+
+    def get_em_quizzes(self, pergunta):
+        """Em quantos quizzes a pergunta está (se > 0, não pode ser excluída)."""
+        anotado = getattr(pergunta, "em_quizzes", None)
+        return anotado if anotado is not None else pergunta.usos.count()
 
     def validate_texto(self, valor):
         valor = _juntar_espacos(valor)

@@ -10,6 +10,28 @@ estudantes entram pelo PIN (com conta ou como convidado) e respondem pelo celula
 
 Mockup de referência: Figma "Sabiá - Projeto Sinergy - EJECT".
 
+## Progresso
+
+Cada etapa tem um peso no frontend e no backend, pelo esforço estimado. A etapa só conta
+quando está pronta, com testes e comparação com o mockup. O total é a média do front e do back.
+
+| Etapa | Peso front | Peso back | Situação |
+|---|---:|---:|---|
+| 1. Estrutura base e layouts | 8% | 8% | ✅ Concluída |
+| 2. Autenticação (entrar, criar conta, recuperar senha) | 12% | 12% | ✅ Concluída |
+| 3. Banco de perguntas | 12% | 10% | ✅ Concluída |
+| 4. Quizzes (Meus jogos, editor, nova pergunta) | 13% | 11% | ✅ Concluída (aguardando aprovação) |
+| 5. Partida ao vivo (sala com PIN, perguntas, ranking) | 25% | 30% | ⏳ A fazer |
+| 6. Histórico e perfil | 12% | 10% | ⏳ A fazer |
+| 7. Materiais e disciplinas | 8% | 9% | ⏳ A fazer |
+| 8. Dashboard do professor | 10% | 10% | ⏳ A fazer |
+
+| Parte | Concluído | Falta |
+|---|---:|---:|
+| **Frontend** | **45%** | 55% |
+| **Backend** | **41%** | 59% |
+| **Total do projeto** | **43%** | 57% |
+
 ## Rodando com Docker
 
 ```bash
@@ -65,8 +87,18 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 - **Categoria x disciplina:** categoria é o tema da pergunta (ex.: Energia Solar), criada pelo
   professor; disciplina é a matéria do quiz e dos materiais (ex.: Ciências). São listas separadas.
 - **Pergunta inativa:** não aparece para ser adicionada a novos quizzes, mas continua nos que
-  já a usam. Pergunta que já está em algum quiz pode ser editada, mas não excluída (essa trava
-  entra junto com os quizzes).
+  já a usam. Pergunta que já está em algum quiz pode ser editada, mas não excluída (a API
+  responde 409; o campo `em_quizzes` diz em quantos quizzes ela está).
+- **Quizzes:** ficam salvos e podem ser jogados quantas vezes o professor quiser, até ele
+  excluir. Só quiz **publicado** pode iniciar partida, e para publicar precisa de ao menos
+  1 pergunta. A estrela marca favorito e também serve de filtro. Disciplina e turma são texto
+  livre (turma opcional); dificuldade aparece no card e filtra a lista. Tempo e pontuação do
+  quiz só pré-preenchem perguntas novas. Embaralhar sorteia uma ordem nova a cada partida, a
+  mesma para todos.
+- **Perguntas do quiz:** "Criar pergunta" dentro do quiz salva também no banco. O lápis numa
+  pergunta do quiz cria uma cópia só para aquele quiz (o banco não muda). Duplicar um quiz copia
+  as perguntas também. Essas cópias não aparecem no banco e somem quando saem do quiz ou quando
+  o quiz é excluído.
 
 ## API de autenticação (`/api/auth/`)
 
@@ -88,6 +120,17 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 | POST | `/api/perguntas/` | Cria (JSON, ou multipart quando há `imagem`) |
 | GET/PATCH/DELETE | `/api/perguntas/<id>/` | Detalhe, edição (`remover_imagem=true` apaga a imagem) e exclusão |
 | GET/POST | `/api/categorias/` | Categorias do professor / "Nova categoria" |
+
+## API dos quizzes (só professores)
+
+| Método | Rota | O que faz |
+|---|---|---|
+| GET | `/api/quizzes/` | Lista paginada (6 por página). Filtros: `busca`, `disciplina`, `status`, `dificuldade`, `favorito=true`, `pagina` |
+| POST | `/api/quizzes/` | Cria; `perguntas_ids` define as perguntas e a ordem |
+| GET/PATCH/DELETE | `/api/quizzes/<id>/` | Detalhe (com `perguntas` completas e `pode_iniciar`), edição e exclusão |
+| GET | `/api/quizzes/disciplinas/` | Disciplinas já usadas (para o filtro) |
+| POST | `/api/quizzes/<id>/duplicar/` | Cópia em rascunho, com cópias das perguntas |
+| PATCH | `/api/quizzes/<id>/perguntas/<pergunta_id>/` | Lápis: edita a pergunta só neste quiz |
 
 ## Estrutura
 

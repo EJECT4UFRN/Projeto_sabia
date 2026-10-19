@@ -1,4 +1,7 @@
+import os
+
 from django.conf import settings
+from django.core.files.base import ContentFile
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.functions import Lower
@@ -74,6 +77,9 @@ class Pergunta(models.Model):
     )
     imagem = models.ImageField(upload_to=caminho_imagem_pergunta, blank=True)
     ativa = models.BooleanField(default=True)
+    # False quando a pergunta é uma cópia exclusiva de um quiz (quiz duplicado ou pergunta
+    # editada pelo lápis dentro do quiz). Essas não aparecem no Banco de Perguntas.
+    no_banco = models.BooleanField(default=True)
     criada_em = models.DateTimeField(auto_now_add=True)
     atualizada_em = models.DateTimeField(auto_now=True)
 
@@ -88,6 +94,36 @@ class Pergunta(models.Model):
             "C": self.alternativa_c,
             "D": self.alternativa_d,
         }
+
+    def copiar(self, **alteracoes):
+        """Cria uma cópia exclusiva de quiz (fora do banco), com a imagem duplicada."""
+        copia = Pergunta(
+            dono_id=self.dono_id,
+            texto=self.texto,
+            alternativa_a=self.alternativa_a,
+            alternativa_b=self.alternativa_b,
+            alternativa_c=self.alternativa_c,
+            alternativa_d=self.alternativa_d,
+            resposta_correta=self.resposta_correta,
+            categoria_id=self.categoria_id,
+            dificuldade=self.dificuldade,
+            tempo_limite=self.tempo_limite,
+            pontuacao_maxima=self.pontuacao_maxima,
+            ativa=True,
+            no_banco=False,
+        )
+        if self.imagem and "imagem" not in alteracoes:
+            with self.imagem.open("rb") as arquivo:
+                copia.imagem.save(os.path.basename(self.imagem.name), ContentFile(arquivo.read()), save=False)
+        for campo, valor in alteracoes.items():
+            setattr(copia, campo, valor)
+        copia.save()
+        return copia
+
+    def excluir_com_imagem(self):
+        if self.imagem:
+            self.imagem.delete(save=False)
+        self.delete()
 
     def __str__(self):
         return self.texto

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "channels",
     "usuarios",
     "perguntas",
+    "quizzes",
 ]
 
 MIDDLEWARE = [
