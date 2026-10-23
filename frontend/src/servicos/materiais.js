@@ -30,3 +30,4 @@ export const listarEstudo = (filtros) => api(`/estudo/${parametros(filtros)}`)
 export const buscarEstudo = (id) => api(`/estudo/${id}/`)
 export const marcarConcluido = (id, concluido) =>
   api(`/estudo/${id}/concluir/`, { metodo: concluido ? 'POST' : 'DELETE' })
+export const listarConclusoes = (id) => api(`/materiais/${id}/conclusoes/`)

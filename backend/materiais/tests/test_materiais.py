@@ -385,3 +385,13 @@ def test_marcar_como_concluido(professor, estudante):
     assert not Conclusao.objects.exists()
     assert cliente.post(f"/api/estudo/{proibido.id}/concluir/").status_code == 403
     assert APIClient().post(f"/api/estudo/{material.id}/concluir/").status_code == 401
+
+
+def test_professor_ve_quem_concluiu(cliente, professor, estudante):
+    material = criar_material(professor, publico=True, permitir_concluir=True)
+    Conclusao.objects.create(material=material, usuario=estudante)
+
+    assert cliente.get(URL).data["results"][0]["conclusoes"] == 1
+    [quem] = cliente.get(f"{URL}{material.id}/conclusoes/").data
+    assert quem["username"] == "ana"
+    assert "concluido_em" in quem

@@ -7,7 +7,6 @@ import PaginaEsqueciSenha from './paginas/autenticacao/PaginaEsqueciSenha'
 import PaginaRedefinirSenha from './paginas/autenticacao/PaginaRedefinirSenha'
 import PaginaBancoPerguntas from './paginas/adm/perguntas/PaginaBancoPerguntas'
 import PaginaEditorPergunta from './paginas/adm/perguntas/PaginaEditorPergunta'
-import EmConstrucao from './paginas/EmConstrucao'
 import PaginaEditorQuiz from './paginas/adm/quizzes/PaginaEditorQuiz'
 import PaginaMeusJogos from './paginas/adm/quizzes/PaginaMeusJogos'
 import PaginaAbrirSala from './paginas/partida/PaginaAbrirSala'
@@ -21,6 +20,11 @@ import PaginaEditorMaterial from './paginas/adm/materiais/PaginaEditorMaterial'
 import PaginaMateriais from './paginas/adm/materiais/PaginaMateriais'
 import PaginaTurma from './paginas/adm/turmas/PaginaTurma'
 import PaginaTurmas from './paginas/adm/turmas/PaginaTurmas'
+import PaginaDashboard from './paginas/adm/painel/PaginaDashboard'
+import PaginaPartidas from './paginas/adm/painel/PaginaPartidas'
+import PaginaRelatorio from './paginas/adm/painel/PaginaRelatorio'
+import PaginaProjeto from './paginas/institucional/PaginaProjeto'
+import PaginaComoFunciona from './paginas/institucional/PaginaComoFunciona'
 import PaginaContinueAprendendo from './paginas/materiais/PaginaContinueAprendendo'
 import PaginaMaterial from './paginas/materiais/PaginaMaterial'
 import ProvedorSessao from './sessao/ProvedorSessao'
@@ -35,16 +39,20 @@ export function Rotas() {
         <Route path="/professor/entrar" element={<PaginaEntrar perfil="professor" />} />
       </Route>
 
+      {/* Página inicial ("O projeto"): ocupa a largura toda, com o rodapé próprio */}
+      <Route element={<LayoutEstudante telaCheia />}>
+        <Route path="/" element={<PaginaProjeto />} />
+        <Route path="/o-projeto" element={<PaginaProjeto />} />
+      </Route>
+
       {/* Área pública (sem barra inferior) */}
       <Route element={<LayoutEstudante />}>
-        <Route path="/" element={<Navigate to="/entrar" replace />} />
         <Route path="/criar-conta" element={<PaginaCriarConta perfil="estudante" />} />
         <Route path="/professor/criar-conta" element={<PaginaCriarConta perfil="professor" />} />
         <Route path="/esqueci-senha" element={<PaginaEsqueciSenha />} />
         <Route path="/redefinir-senha/:uid/:token" element={<PaginaRedefinirSenha />} />
         <Route path="/entrar-pin" element={<PaginaEntrarPin />} />
-        <Route path="/como-funciona" element={<EmConstrucao titulo="Como funciona" />} />
-        <Route path="/o-projeto" element={<EmConstrucao titulo="O projeto" />} />
+        <Route path="/como-funciona" element={<PaginaComoFunciona />} />
       </Route>
 
       {/* Área de quem está logado (com barra inferior no mobile) */}
@@ -72,7 +80,9 @@ export function Rotas() {
       {/* Painel do professor */}
       <Route element={<RotaProtegida perfil="professor" telaDeEntrar="/professor/entrar" />}>
         <Route path="/adm" element={<LayoutAdm />}>
-          <Route index element={<EmConstrucao titulo="Dashboard" />} />
+          <Route index element={<PaginaDashboard />} />
+          <Route path="partidas" element={<PaginaPartidas />} />
+          <Route path="partidas/:id/relatorio" element={<PaginaRelatorio />} />
           <Route path="perguntas" element={<PaginaBancoPerguntas />} />
           <Route path="perguntas/nova" element={<PaginaEditorPergunta />} />
           <Route path="perguntas/:id/editar" element={<PaginaEditorPergunta />} />

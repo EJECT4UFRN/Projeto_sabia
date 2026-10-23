@@ -25,6 +25,7 @@ import {
   mudarStatusMaterial,
   resumoMateriais,
 } from '../../../servicos/materiais'
+import ModalConclusoes from './ModalConclusoes'
 import estilos from './PaginaMateriais.module.css'
 import { TIPOS_MATERIAL, formatarData, plural, tipoMaterial } from './tiposMaterial'
 
@@ -65,6 +66,7 @@ export default function PaginaMateriais() {
   const [paraExcluir, setParaExcluir] = useState(null)
   const [excluindo, setExcluindo] = useState(false)
   const [erroExclusao, setErroExclusao] = useState('')
+  const [vendoConclusoes, setVendoConclusoes] = useState(null)
 
   const chaveFiltros = parametros.toString()
   const chave = `${chaveFiltros}#${versao}`
@@ -344,6 +346,16 @@ export default function PaginaMateriais() {
                     {turmas.length > 0 && <span>{turmas.join(', ')}</span>}
                     <span>{formatarData(material.criado_em)}</span>
                     <span>{plural(material.visualizacoes, 'visualização', 'visualizações')}</span>
+                    {material.permitir_concluir && (
+                      <button
+                        type="button"
+                        className={estilos.concluiram}
+                        onClick={() => setVendoConclusoes(material)}
+                        disabled={material.conclusoes === 0}
+                      >
+                        {material.conclusoes === 1 ? '1 concluiu' : `${material.conclusoes} concluíram`}
+                      </button>
+                    )}
                   </p>
                   <div className={estilos.acoes}>
                     <Link
@@ -404,6 +416,8 @@ export default function PaginaMateriais() {
           </footer>
         )}
       </section>
+
+      <ModalConclusoes material={vendoConclusoes} aoFechar={() => setVendoConclusoes(null)} />
 
       <Modal
         aberto={Boolean(paraExcluir)}

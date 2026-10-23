@@ -49,10 +49,10 @@ describe('Cabeçalho do estudante', () => {
 })
 
 describe('Rotas', () => {
-  it('redireciona a raiz para a tela de entrar', () => {
+  it('a raiz abre a página do projeto', () => {
     simularApi()
     renderizarApp('/')
-    expect(screen.getAllByRole('heading', { name: 'Entrar na conta' }).length).toBeGreaterThan(0)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Aprender pode ser a melhor jogada')
   })
 
   it('manda quem não está logado para a tela de entrar', () => {

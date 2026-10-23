@@ -22,6 +22,7 @@ Mockup de referência: Figma "Sabiá - Projeto Sinergy - EJECT".
 
 Cada etapa tem um peso no frontend e no backend, pelo esforço estimado. A etapa só conta
 quando está pronta, com testes e comparação com o mockup. O total é a média do front e do back.
+As etapas 9 e 10 entraram depois do plano inicial: os pesos somam 104 no front, então o front é o feito ÷ 104.
 
 | Etapa | Peso front | Peso back | Situação |
 |---|---:|---:|---|
@@ -32,13 +33,15 @@ quando está pronta, com testes e comparação com o mockup. O total é a média
 | 5. Partida ao vivo (sala com PIN, perguntas, ranking) | 25% | 30% | ✅ Concluída |
 | 6. Histórico e perfil | 12% | 10% | ✅ Concluída |
 | 7. Materiais, disciplinas e turmas | 8% | 9% | ✅ Concluída |
-| 8. Dashboard do professor | 10% | 10% | ⏳ A fazer |
+| 8. Dashboard do professor | 10% | 10% | ✅ Concluída |
+| 9. Página Como funciona | 2% | 0% | ✅ Concluída |
+| 10. Página O projeto (página inicial) | 2% | 0% | ✅ Concluída |
 
 | Parte | Concluído | Falta |
 |---|---:|---:|
-| **Frontend** | **90%** | 10% |
-| **Backend** | **90%** | 10% |
-| **Total do projeto** | **90%** | 10% |
+| **Frontend** | **100%** | 0% |
+| **Backend** | **100%** | 0% |
+| **Total do projeto** | **100%** | 0% |
 
 ## Rodando com Docker
 
@@ -79,6 +82,8 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 - **Entrada pelo PIN:** com conta (a partida vai para o histórico) ou como convidado, só
   com apelido (nada fica salvo).
 - **Materiais:** PDF, DOC ou DOCX enviado como arquivo (até 20 MB); vídeos e artigos como link.
+- **Página inicial:** `/` abre "O projeto" (a mesma página de `/o-projeto`), com a lâmpada
+  animada e até 3 materiais em destaque (os públicos, ou os da turma para quem está logado).
 - **Login:** por nome de usuário ou e-mail (sem diferenciar maiúsculas). "Manter minha conta
   conectada" guarda a sessão por até 7 dias; desmarcado, ela some ao fechar o navegador.
 - **Cadastro:** nome de usuário único, pode ter espaços ("Ryan Guilherme"); espaços repetidos
@@ -151,6 +156,15 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 - **Visualizações e concluído:** abrir o material conta 1 visualização por aluno logado (visitante
   e o próprio professor não contam). Se o professor permitir, o aluno marca "Concluído" (e pode
   desmarcar); o professor ainda não vê quem concluiu (fica para o dashboard).
+- **Dashboard do professor:** "Olá, <primeiro nome>!". Total de perguntas (do banco), jogos ativos
+  (partidas já começadas e não terminadas), aguardando (salas abertas esperando "Iniciar") e
+  concluídos (todas as partidas encerradas). "Jogos recentes" mostra as 3 últimas partidas, sem as
+  canceladas; "Ver mais" abre "Minhas partidas" (10 por página, filtro por situação e busca por nome
+  ou PIN). Partida ativa volta para o telão; partida terminada abre o relatório (pódio, ranking
+  completo e acerto por pergunta). "Iniciar sessão ao vivo" escolhe um quiz publicado. No celular,
+  as partidas viram faixas coloridas empilhadas.
+- **Busca do topo do painel:** quizzes do professor e alunos das turmas dele (pelo menos 2 letras).
+- **Quem concluiu:** o card do material mostra "X concluíram" e abre a lista de estudantes.
 - **Continue aprendendo:** primeiro os materiais das disciplinas das partidas que o aluno jogou,
   depois os mais novos. Busca por título, descrição ou disciplina e filtro por formato.
 
@@ -214,6 +228,16 @@ cd frontend && npm install && npm test && npm run lint && npm run build
 | GET | `/api/estudo/<id>/` | Abre o material e conta a visualização |
 | POST/DELETE | `/api/estudo/<id>/concluir/` | (logado) Marca ou desmarca como concluído |
 
+## Dashboard e partidas (só professores)
+
+| Método | Rota | O que faz |
+|---|---|---|
+| GET | `/api/painel/` | `perguntas_total`, `jogos_ativos`, `aguardando`, `concluidos` e as 3 partidas `recentes` |
+| GET | `/api/painel/busca/?q=` | Busca do topo: `quizzes` e `alunos` (com a turma) |
+| GET | `/api/partidas/` | "Minhas partidas" (10 por página): `situacao` (aguardando, em_andamento, finalizado), `busca`, `pagina` |
+| GET | `/api/partidas/<id>/relatorio/` | Relatório da partida encerrada (409 se ainda estiver ativa) |
+| GET | `/api/materiais/<id>/conclusoes/` | Estudantes que concluíram o material |
+
 ## Histórico do estudante
 
 | Método | Rota | O que faz |
@@ -246,6 +270,10 @@ docker-compose.yml
 ```
 
 ## Pendências conhecidas
+
+- Rodapé da página inicial: o mockup traz "News", "Blog", "Webinars", "Actimo" e "Motimate",
+  mas eles ainda não têm endereço. Ficaram de fora até o Projeto Sinergy passar os links; o
+  rodapé mostra Criar conta, Materiais, Jogar, Como funciona e o e-mail sinergy@ufrn.com.br.
 
 - A fonte **PP Telegraf** do mockup é comercial e não está no Google Fonts; o projeto cai
   para Outfit até a licença ser adicionada em `frontend/src/estilos/tokens.css`.

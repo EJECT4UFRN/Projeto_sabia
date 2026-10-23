@@ -235,3 +235,27 @@ describe('Novo material', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Este material não existe mais.')
   })
 })
+
+describe('Quem concluiu', () => {
+  it('abre a lista de quem concluiu o material', async () => {
+    const usuarioEvento = userEvent.setup()
+    logarComo(
+      PROFESSOR,
+      rotasLista({
+        'GET /materiais/': [200, pagina([material(1, { permitir_concluir: true, conclusoes: 2 })])],
+        'GET /materiais/1/conclusoes/': [
+          200,
+          [
+            { id: 3, nome: 'Ana Lima', username: 'ana', iniciais: 'AL', cor_avatar: 'azul', concluido_em: '2026-10-19T12:00:00Z' },
+            { id: 4, nome: 'Beto', username: 'beto', iniciais: 'BE', cor_avatar: 'verde', concluido_em: '2026-10-18T12:00:00Z' },
+          ],
+        ],
+      }),
+    )
+    renderizarApp('/adm/materiais')
+    await usuarioEvento.click(await screen.findByRole('button', { name: '2 concluíram' }))
+    const dialogo = screen.getByRole('dialog', { name: 'Material 1' })
+    expect(await within(dialogo).findByText('Ana Lima')).toBeInTheDocument()
+    expect(within(dialogo).getByText('@beto')).toBeInTheDocument()
+  })
+})

@@ -8,6 +8,7 @@ from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
+from escola.serializers import AlunoSerializer
 from partidas.models import Participante
 from usuarios.permissoes import EhProfessor
 
@@ -56,9 +57,10 @@ class MaterialViewSet(viewsets.ModelViewSet):
         if self.action != "list":
             return materiais
 
-        materiais = materiais.annotate(visualizacoes_total=Count("visualizacoes", distinct=True)).order_by(
-            "-criado_em", "-id"
-        )
+        materiais = materiais.annotate(
+            visualizacoes_total=Count("visualizacoes", distinct=True),
+            conclusoes_total=Count("conclusoes", distinct=True),
+        ).order_by("-criado_em", "-id")
         filtros = self.request.query_params
         materiais = _busca(materiais, filtros.get("busca"))
         if filtros.get("disciplina", "").isdigit():
@@ -73,6 +75,18 @@ class MaterialViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, material):
         material.apagar_arquivos()
         material.delete()
+
+    @action(detail=True)
+    def conclusoes(self, request, pk=None):
+        """Estudantes que marcaram o material como concluído (do mais recente para o mais antigo)."""
+        material = self.get_object()
+        conclusoes = material.conclusoes.select_related("usuario").order_by("-criada_em")
+        return Response(
+            [
+                {**AlunoSerializer(conclusao.usuario).data, "concluido_em": conclusao.criada_em}
+                for conclusao in conclusoes
+            ]
+        )
 
     @action(detail=False)
     def resumo(self, request):

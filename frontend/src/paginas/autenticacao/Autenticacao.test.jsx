@@ -49,7 +49,7 @@ describe('Tela de entrar', () => {
     await usuario.type(screen.getByLabelText('Senha'), 'Sabia#Forte2026')
     await usuario.click(screen.getByRole('button', { name: 'Entrar' }))
 
-    expect(await screen.findByRole('heading', { name: 'Dashboard' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Olá, Állex!' })).toBeInTheDocument()
   })
 
   it('volta para a página que a pessoa tentou abrir antes de entrar', async () => {
@@ -157,7 +157,7 @@ describe('Tela de criar conta', () => {
     await preencher(usuario)
     await usuario.click(screen.getByRole('button', { name: 'Criar conta de professor' }))
 
-    expect(await screen.findByRole('heading', { name: 'Dashboard' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Olá, Állex!' })).toBeInTheDocument()
     expect(chamadas[0].corpo.perfil).toBe('professor')
   })
 

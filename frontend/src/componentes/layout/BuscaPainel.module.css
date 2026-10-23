@@ -1,0 +1,124 @@
+.caixa {
+  position: relative;
+  width: min(306px, 100%);
+}
+
+.campo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: #cce0f2;
+  color: var(--cor-azul-escuro);
+}
+
+.campo input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--fonte-titulo);
+  font-size: 14px;
+  color: var(--cor-azul-escuro);
+  outline: none;
+}
+
+.campo input::placeholder {
+  color: #6b7280;
+}
+
+.campo:focus-within {
+  outline: 3px solid var(--cor-azul-claro);
+  outline-offset: 2px;
+}
+
+.lista {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  width: max(100%, 360px);
+  max-height: 420px;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  border: 1px solid rgba(10, 55, 78, 0.13);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco-puro);
+  box-shadow: var(--sombra-dropdown);
+  list-style: none;
+}
+
+.grupo {
+  margin: 6px 8px;
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cor-laranja-sinergy);
+}
+
+.itens {
+  margin: 0 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: var(--raio-medio);
+  cursor: pointer;
+}
+
+.ativo {
+  background: #e5f0f4;
+}
+
+.marcaQuiz {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--raio-cartao);
+  background: rgba(4, 60, 115, 0.1);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 10px;
+  color: var(--cor-azul);
+}
+
+.textos {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.principal {
+  overflow: hidden;
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 14px;
+  color: #082f43;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detalhe {
+  font-family: var(--fonte-titulo);
+  font-size: 12px;
+  color: #55707d;
+}
+
+.aviso {
+  padding: 10px 8px;
+  font-family: var(--fonte-titulo);
+  font-size: 14px;
+  color: #55707d;
+}

@@ -104,6 +104,7 @@ class MaterialSerializer(serializers.ModelSerializer):
     youtube_id = serializers.CharField(read_only=True)
     extensao = serializers.CharField(read_only=True)
     visualizacoes = serializers.SerializerMethodField()
+    conclusoes = serializers.SerializerMethodField()
 
     class Meta:
         model = Material
@@ -131,6 +132,7 @@ class MaterialSerializer(serializers.ModelSerializer):
             "status",
             "permitir_concluir",
             "visualizacoes",
+            "conclusoes",
             "criado_em",
             "atualizado_em",
         )
@@ -171,6 +173,10 @@ class MaterialSerializer(serializers.ModelSerializer):
 
     def get_tamanho(self, material):
         return tamanho_do_arquivo(material)
+
+    def get_conclusoes(self, material):
+        anotado = getattr(material, "conclusoes_total", None)
+        return anotado if anotado is not None else material.conclusoes.count()
 
     def get_visualizacoes(self, material):
         anotado = getattr(material, "visualizacoes_total", None)
