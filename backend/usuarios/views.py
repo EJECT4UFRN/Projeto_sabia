@@ -13,9 +13,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Usuario
 from .serializers import (
+    AlterarSenhaSerializer,
     CadastroSerializer,
     EntrarSerializer,
     EsqueciSenhaSerializer,
+    PerfilSerializer,
     RedefinirSenhaSerializer,
     UsuarioSerializer,
 )
@@ -72,10 +74,29 @@ class SairView(APIView):
 
 
 class EuView(APIView):
+    """Dados do usuário logado (GET) e edição do próprio perfil (PATCH)."""
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         return Response(UsuarioSerializer(request.user).data)
+
+    def patch(self, request):
+        serializer = PerfilSerializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(UsuarioSerializer(request.user).data)
+
+
+class AlterarSenhaView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = AlterarSenhaSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        request.user.set_password(serializer.validated_data["senha"])
+        request.user.save(update_fields=["password"])
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class EsqueciSenhaView(APIView):

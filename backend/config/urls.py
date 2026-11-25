@@ -11,6 +11,9 @@ urlpatterns = [
     path("api/auth/", include("usuarios.urls")),
     path("api/", include("perguntas.urls")),
     path("api/", include("quizzes.urls")),
+    path("api/", include("partidas.urls")),
+    path("api/", include("escola.urls")),
+    path("api/", include("materiais.urls")),
 ]
 
 if settings.DEBUG:

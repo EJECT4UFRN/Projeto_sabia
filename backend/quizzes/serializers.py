@@ -1,6 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 
+from escola.models import Disciplina
 from perguntas.models import (
     PONTUACAO_MAXIMA,
     PONTUACAO_MINIMA,
@@ -19,12 +20,23 @@ def _juntar_espacos(texto):
     return " ".join((texto or "").split())
 
 
+class DisciplinaDoProfessorField(serializers.PrimaryKeyRelatedField):
+    default_error_messages = {
+        "does_not_exist": "Essa disciplina não existe mais. Escolha outra.",
+        "incorrect_type": "Escolha uma disciplina da lista.",
+    }
+
+    def get_queryset(self):
+        return Disciplina.objects.filter(dono=self.context["request"].user)
+
+
 class QuizResumoSerializer(serializers.ModelSerializer):
     """Card da lista "Meus jogos"."""
 
+    disciplina = serializers.CharField(source="disciplina.nome", read_only=True, default="")
+    disciplina_id = serializers.IntegerField(read_only=True)
     perguntas_total = serializers.IntegerField(read_only=True)
-    # Preenchido de verdade na etapa das partidas ao vivo.
-    partidas_realizadas = serializers.SerializerMethodField()
+    partidas_realizadas = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Quiz
@@ -32,6 +44,7 @@ class QuizResumoSerializer(serializers.ModelSerializer):
             "id",
             "titulo",
             "disciplina",
+            "disciplina_id",
             "turma",
             "dificuldade",
             "status",
@@ -40,9 +53,6 @@ class QuizResumoSerializer(serializers.ModelSerializer):
             "partidas_realizadas",
             "atualizado_em",
         )
-
-    def get_partidas_realizadas(self, quiz):
-        return 0
 
 
 class PerguntaDoQuizSerializer(PerguntaSerializer):
@@ -58,6 +68,8 @@ class QuizSerializer(serializers.ModelSerializer):
         child=serializers.IntegerField(), write_only=True, required=False, allow_empty=True
     )
     perguntas = serializers.SerializerMethodField()
+    disciplina = serializers.CharField(source="disciplina.nome", read_only=True, default="")
+    disciplina_id = DisciplinaDoProfessorField(source="disciplina", allow_null=True, required=False)
     perguntas_total = serializers.SerializerMethodField()
     partidas_realizadas = serializers.SerializerMethodField()
     pode_iniciar = serializers.BooleanField(read_only=True)
@@ -87,6 +99,7 @@ class QuizSerializer(serializers.ModelSerializer):
             "titulo",
             "descricao",
             "disciplina",
+            "disciplina_id",
             "turma",
             "dificuldade",
             "tempo_padrao",
@@ -116,16 +129,14 @@ class QuizSerializer(serializers.ModelSerializer):
         return quiz.itens.count()
 
     def get_partidas_realizadas(self, quiz):
-        return 0
+        anotado = getattr(quiz, "partidas_realizadas", None)
+        return anotado if anotado is not None else quiz.partidas.filter(estado="encerrada").count()
 
     def validate_titulo(self, valor):
         valor = _juntar_espacos(valor)
         if not valor:
             raise serializers.ValidationError("Dê um título para o quiz.")
         return valor
-
-    def validate_disciplina(self, valor):
-        return _juntar_espacos(valor)
 
     def validate_turma(self, valor):
         return _juntar_espacos(valor)

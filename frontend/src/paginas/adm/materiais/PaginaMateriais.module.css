@@ -1,0 +1,534 @@
+/* "Materiais de estudo" (mockup 363:6426). Valores do mockup convertidos da escala 0,873 do frame. */
+
+.botaoNovo {
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+.aviso {
+  margin-bottom: 16px;
+}
+
+/* ----- números do topo ----- */
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.numero,
+.filtros,
+.cartao,
+.estado {
+  border: 1px solid rgba(10, 55, 78, 0.13);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco-puro);
+  box-shadow: 0 12px 15px rgba(10, 55, 78, 0.08);
+}
+
+.numero {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 20px 20px;
+}
+
+.iconeNumero {
+  display: inline-flex;
+  height: 24px;
+  align-items: center;
+}
+
+.azul {
+  color: var(--cor-azul-claro);
+}
+
+.laranja {
+  color: var(--cor-laranja-sinergy);
+}
+
+.ambar {
+  color: #d97706;
+}
+
+.valor {
+  padding-top: 12px;
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 36px;
+  color: var(--cor-azul);
+}
+
+.rotuloNumero {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  color: #55707d;
+}
+
+/* ----- filtros ----- */
+.filtros {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 20px;
+}
+
+.linhaFiltros {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.busca {
+  position: relative;
+  display: flex;
+}
+
+.busca input,
+.seletor {
+  width: 100%;
+  min-height: 50px;
+  border: 2px solid #a9c3d0;
+  border-radius: var(--raio-cartao);
+  background: #f8fbfc;
+  font-family: var(--fonte-titulo);
+  font-size: 16px;
+  color: #082f43;
+}
+
+.busca input {
+  padding: 12px 12px 12px 40px;
+}
+
+.busca input::placeholder {
+  color: #6b7280;
+}
+
+.lupa {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  display: inline-flex;
+  color: #082f43;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.lupa svg {
+  width: 16px;
+  height: 16px;
+}
+
+.seletor {
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+.limpar {
+  min-height: 50px;
+  border: 1px solid #d3d3d3;
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco-puro);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--cor-azul);
+  cursor: pointer;
+}
+
+.limpar:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.limpar:not(:disabled):hover {
+  background: #f4f8fb;
+}
+
+.busca input:focus-visible,
+.seletor:focus-visible {
+  outline: 3px solid rgba(7, 135, 203, 0.45);
+  outline-offset: 1px;
+}
+
+.encontrados {
+  margin: 0;
+  min-height: 20px;
+  font-family: var(--fonte-titulo);
+  font-size: 14px;
+  line-height: 20px;
+  color: #55707d;
+}
+
+/* ----- cartões ----- */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.atualizando {
+  opacity: 0.55;
+}
+
+.cartao {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.cabecaCartao {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.iconeTipo {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--raio-cartao);
+}
+
+.video {
+  background: #dbeafe;
+  color: var(--cor-azul-claro);
+}
+
+.documento {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.artigo {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.textos {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-size: 12px;
+  line-height: 16px;
+  color: #55707d;
+}
+
+.selo {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+.publicado {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.rascunho {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.titulo {
+  margin: 0;
+  padding-top: 8px;
+  overflow-wrap: anywhere;
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 28px;
+  color: #082f43;
+}
+
+.descricao {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-family: var(--fonte-destaque);
+  font-size: 14px;
+  line-height: 20px;
+  color: #55707d;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  font-family: var(--fonte-titulo);
+  font-size: 12px;
+  line-height: 16px;
+  color: #55707d;
+}
+
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acao,
+.acaoTexto {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--raio-cartao);
+  background: #e5f0f4;
+  color: #082f43;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.acao {
+  width: 40px;
+}
+
+.acao svg {
+  width: 18px;
+  height: 18px;
+}
+
+.acaoTexto {
+  padding: 0 12px;
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.acao:hover,
+.acaoTexto:hover {
+  filter: brightness(0.96);
+}
+
+.acaoTexto:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.publicar {
+  background: var(--cor-azul);
+  color: var(--cor-branco-puro);
+}
+
+.excluir {
+  margin-left: auto;
+  background: #fef2f2;
+  color: var(--cor-erro);
+}
+
+.excluir svg {
+  width: 14px;
+  height: 16px;
+}
+
+/* ----- estados ----- */
+.estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 64px 40px;
+  text-align: center;
+}
+
+.iconeVazio {
+  display: inline-flex;
+  margin-bottom: 8px;
+  color: var(--cor-azul-claro);
+}
+
+.estadoTitulo {
+  margin: 0;
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 28px;
+  color: #082f43;
+}
+
+.estadoTexto {
+  margin: 0 0 8px;
+  font-family: var(--fonte-titulo);
+  font-size: 14px;
+  line-height: 20px;
+  color: #55707d;
+}
+
+/* ----- rodapé ----- */
+.rodape {
+  display: flex;
+  min-height: 88px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.contagem {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #2a4d6a;
+}
+
+.textoModal {
+  margin: 0 0 12px;
+  font-family: var(--fonte-titulo);
+  font-size: 15px;
+  line-height: 22px;
+  color: #2a4d6a;
+}
+
+@media (max-width: 1100px) {
+  .linhaFiltros {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .busca {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .grade {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .botaoNovo {
+    width: 100%;
+  }
+
+  .numeros {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .linhaFiltros {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* No celular o "Limpar filtros" vira link ao lado da contagem, como no mockup. */
+  .filtros {
+    position: relative;
+  }
+
+  .limpar {
+    position: absolute;
+    right: 20px;
+    bottom: 14px;
+    min-height: 0;
+    padding: 4px 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .rodape {
+    min-height: 0;
+    justify-content: center;
+  }
+
+  .contagem {
+    display: none;
+  }
+}
+
+/* "X concluíram" e a lista no modal */
+.concluiram {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 12px;
+  color: #15803d;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.concluiram:disabled {
+  color: #55707d;
+  text-decoration: none;
+  cursor: default;
+}
+
+.listaConcluiram {
+  display: flex;
+  max-height: 360px;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.alunoConcluiu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.alunoConcluiu:last-child {
+  border-bottom: 0;
+}
+
+.nomeAluno {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 14px;
+  color: #082f43;
+}
+
+.nomeAluno span {
+  font-weight: 400;
+  font-size: 12px;
+  color: #55707d;
+}
+
+.dataConclusao {
+  font-family: var(--fonte-titulo);
+  font-size: 12px;
+  color: #55707d;
+}

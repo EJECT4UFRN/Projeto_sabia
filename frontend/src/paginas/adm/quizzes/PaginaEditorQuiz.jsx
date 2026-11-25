@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Carregando from '../../../componentes/estados/Carregando'
 import Alerta from '../../../componentes/formulario/Alerta'
@@ -7,16 +7,19 @@ import BotaoPainel from '../../../componentes/painel/BotaoPainel'
 import CabecalhoPagina from '../../../componentes/painel/CabecalhoPagina'
 import { DIFICULDADES } from '../../../componentes/painel/dificuldades'
 import { listarPerguntas, salvarPergunta } from '../../../servicos/perguntas'
-import { buscarQuiz, editarPerguntaNoQuiz, listarDisciplinas, salvarQuiz } from '../../../servicos/quizzes'
+import SeletorDisciplina from '../../../componentes/painel/SeletorDisciplina'
+import { listarDisciplinas } from '../../../servicos/escola'
+import { buscarQuiz, editarPerguntaNoQuiz, salvarQuiz } from '../../../servicos/quizzes'
 import { LIMITES } from '../perguntas/validacaoPergunta'
 import ModalPerguntaQuiz from './ModalPerguntaQuiz'
 import estilos from './PaginaEditorQuiz.module.css'
 
 const ESPERA_BUSCA = 350
+const ordenarPorNome = (lista) => [...lista].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
 const FORM_VAZIO = {
   titulo: '',
   descricao: '',
-  disciplina: '',
+  disciplina_id: '',
   turma: '',
   dificuldade: 'medio',
   tempo_padrao: String(LIMITES.tempo.padrao),
@@ -30,7 +33,7 @@ function paraFormulario(quiz) {
   return {
     titulo: quiz.titulo,
     descricao: quiz.descricao,
-    disciplina: quiz.disciplina,
+    disciplina_id: quiz.disciplina_id ? String(quiz.disciplina_id) : '',
     turma: quiz.turma,
     dificuldade: quiz.dificuldade,
     tempo_padrao: String(quiz.tempo_padrao),
@@ -45,6 +48,7 @@ function paraEnvio(form, perguntas) {
   const { publicado, ...resto } = form
   return {
     ...resto,
+    disciplina_id: form.disciplina_id ? Number(form.disciplina_id) : null,
     tempo_padrao: Number(form.tempo_padrao),
     pontuacao_padrao: Number(form.pontuacao_padrao),
     status: publicado ? 'publicado' : 'rascunho',
@@ -106,7 +110,6 @@ export default function PaginaEditorQuiz() {
 function Editor({ quiz }) {
   const navegar = useNavigate()
   const local = useLocation()
-  const idDisciplinas = useId()
   const [form, setForm] = useState(() => (quiz ? paraFormulario(quiz) : FORM_VAZIO))
   const [perguntas, setPerguntas] = useState(() => quiz?.perguntas ?? [])
   const [salvo, setSalvo] = useState(() => (quiz ? { retrato: retrato(paraFormulario(quiz), quiz.perguntas), quiz } : null))
@@ -198,7 +201,7 @@ function Editor({ quiz }) {
       return resposta
     } catch (falha) {
       const doServidor = {}
-      ;['titulo', 'disciplina', 'turma', 'descricao', 'tempo_padrao', 'pontuacao_padrao', 'perguntas_ids'].forEach(
+      ;['titulo', 'disciplina_id', 'turma', 'descricao', 'tempo_padrao', 'pontuacao_padrao', 'perguntas_ids'].forEach(
         (campo) => {
           const mensagem = falha.doCampo?.(campo)
           if (mensagem) doServidor[campo] = mensagem
@@ -301,19 +304,17 @@ function Editor({ quiz }) {
             <div className={estilos.grade}>
               <label className={estilos.campo}>
                 <span className={estilos.rotulo}>Disciplina</span>
-                <input
+                <SeletorDisciplina
                   className={estilos.entrada}
-                  maxLength={60}
-                  list={idDisciplinas}
-                  placeholder="Ex.: Ciências"
-                  value={form.disciplina}
-                  onChange={(e) => mudar('disciplina', e.target.value)}
+                  valor={form.disciplina_id}
+                  aoMudar={(valor) => mudar('disciplina_id', valor)}
+                  disciplinas={disciplinas}
+                  aoCadastrar={(nova) => setDisciplinas((lista) => ordenarPorNome([...lista, nova]))}
+                  textoVazio="Sem disciplina"
+                  descricaoModal="Adicione uma disciplina para usar neste quiz."
+                  aria-invalid={Boolean(erros.disciplina_id)}
                 />
-                <datalist id={idDisciplinas}>
-                  {disciplinas.map((nome) => (
-                    <option key={nome} value={nome} />
-                  ))}
-                </datalist>
+                {erroDe('disciplina_id')}
               </label>
               <label className={estilos.campo}>
                 <span className={estilos.rotulo}>Turma</span>

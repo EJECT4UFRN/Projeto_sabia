@@ -1,0 +1,442 @@
+/* Relatório da partida (sem mockup): pódio no estilo do telão, cartões e listas do painel. */
+
+.relatorio {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ----- pódio ----- */
+.palco {
+  padding: 32px 24px 0;
+  overflow: hidden;
+  border-radius: var(--raio-cartao);
+  background: linear-gradient(180deg, #0a374e 0%, #043c73 100%);
+}
+
+.podio {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.coluna {
+  display: flex;
+  width: min(200px, 30%);
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.nomePodio {
+  max-width: 100%;
+  overflow: hidden;
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 26px;
+  color: var(--cor-branco-puro);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.degrau {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-top: 16px;
+  border-radius: var(--raio-cartao) var(--raio-cartao) 0 0;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.ouro .degrau {
+  height: 180px;
+  background: var(--cor-laranja-sinergy);
+}
+
+.prata .degrau {
+  height: 140px;
+  background: var(--cor-azul-claro);
+}
+
+.bronze .degrau {
+  height: 110px;
+  background: #29966f;
+}
+
+.vaga .degrau {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.medalha {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+  background: var(--cor-amarelo-solar);
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--cor-azul-escuro);
+}
+
+.prata .medalha {
+  background: #e5f0f4;
+}
+
+.bronze .medalha {
+  background: #fc9c14;
+}
+
+.pontosPodio {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--cor-branco-puro);
+}
+
+/* ----- números ----- */
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+}
+
+.numero,
+.cartao,
+.estado {
+  border: 1px solid rgba(10, 55, 78, 0.13);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco-puro);
+  box-shadow: 0 12px 15px rgba(10, 55, 78, 0.08);
+}
+
+.numero {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 20px;
+}
+
+.numero dt {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  color: #55707d;
+}
+
+.numero dd {
+  margin: 0;
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 34px;
+  color: var(--cor-azul);
+}
+
+/* ----- ranking e perguntas ----- */
+.colunas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.cartao {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.tituloSecao {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 28px;
+  color: #082f43;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--fonte-titulo);
+  font-size: 14px;
+  color: #082f43;
+}
+
+.tabela th {
+  padding: 8px;
+  border-bottom: 2px solid #c0d6ea;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: left;
+  text-transform: uppercase;
+  color: #2a4d6a;
+}
+
+.tabela td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tabela tbody tr:nth-child(-n + 3) td {
+  font-weight: 700;
+}
+
+.numeroColuna {
+  text-align: right;
+}
+
+.tabela th.numeroColuna {
+  text-align: right;
+}
+
+.posicao {
+  width: 44px;
+  color: var(--cor-laranja-sinergy);
+}
+
+.pontos {
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  color: var(--cor-azul);
+}
+
+.convidado {
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: #f3f4f6;
+  font-weight: 500;
+  font-size: 11px;
+  color: #55707d;
+}
+
+.perguntas {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pergunta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pergunta:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.cabecaPergunta {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.numeroPergunta {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--raio-medio);
+  background: rgba(4, 60, 115, 0.1);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--cor-azul);
+}
+
+.textoPergunta {
+  min-width: 0;
+  flex: 1;
+  margin: 3px 0 0;
+  overflow-wrap: anywhere;
+  font-family: var(--fonte-titulo);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 22px;
+  color: #082f43;
+}
+
+.percentual {
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 28px;
+  color: #b45309;
+}
+
+.bom {
+  color: #15803d;
+}
+
+.ruim {
+  color: var(--cor-erro);
+}
+
+.barra {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #e5f0f4;
+}
+
+.barra span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--cor-azul-claro), #29966f);
+}
+
+.detalhePergunta {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-size: 13px;
+  color: #55707d;
+}
+
+.distribuicao {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alternativa {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 2px solid transparent;
+  border-radius: var(--raio-medio);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--cor-branco-puro);
+  opacity: 0.55;
+}
+
+.alternativa svg {
+  width: 12px;
+  height: 12px;
+}
+
+.certa {
+  border-color: #082f43;
+  opacity: 1;
+}
+
+.vermelho {
+  background: #d94a3d;
+}
+
+.azul {
+  background: #0787cb;
+}
+
+.amarelo {
+  background: #e4a600;
+}
+
+.verde {
+  background: #29966f;
+}
+
+/* ----- estados ----- */
+.estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.estadoTitulo {
+  margin: 0;
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  font-size: 22px;
+  color: #082f43;
+}
+
+.estadoTexto {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-size: 14px;
+  color: #55707d;
+}
+
+.botoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+@media (max-width: 1100px) {
+  .colunas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .numeros {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .palco {
+    padding: 24px 8px 0;
+  }
+
+  .nomePodio {
+    font-size: 15px;
+  }
+
+  .ouro .degrau {
+    height: 140px;
+  }
+
+  .prata .degrau {
+    height: 110px;
+  }
+
+  .bronze .degrau {
+    height: 90px;
+  }
+
+  .medalha {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .cartao {
+    padding: 16px;
+  }
+}

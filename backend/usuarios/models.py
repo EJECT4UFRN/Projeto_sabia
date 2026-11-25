@@ -43,13 +43,13 @@ class Usuario(AbstractUser):
         PROFESSOR = "professor", "Professor"
 
     class CorAvatar(models.TextChoices):
-        # Cores das amostras da tela de perfil, nomeadas pelos tokens do Figma.
-        LARANJA_SINERGY = "laranja_sinergy", "Laranja Sinergy"
-        LARANJA = "laranja", "Laranja"
+        # As 6 amostras da tela de perfil do mockup.
         AMARELO = "amarelo", "Amarelo"
-        AZUL_CLARO = "azul_claro", "Azul claro"
+        LARANJA = "laranja", "Laranja"
         AZUL = "azul", "Azul"
-        AZUL_ESCURO = "azul_escuro", "Azul escuro"
+        VERDE = "verde", "Verde"
+        VERMELHO = "vermelho", "Vermelho"
+        ROXO = "roxo", "Roxo"
 
     username_validator = ValidadorNomeDeUsuario()
 
@@ -63,9 +63,12 @@ class Usuario(AbstractUser):
     email = models.EmailField("e-mail", blank=True)
     perfil = models.CharField(max_length=20, choices=Perfil.choices, default=Perfil.ESTUDANTE)
     cor_avatar = models.CharField(
-        "cor do avatar", max_length=20, choices=CorAvatar.choices, default=CorAvatar.LARANJA_SINERGY
+        "cor do avatar", max_length=20, choices=CorAvatar.choices, default=CorAvatar.AMARELO
     )
-    sobre_mim = models.TextField("sobre mim", blank=True)
+    # Nome mostrado no perfil, no histórico e sugerido como apelido nas partidas.
+    # Em branco, vale o nome de usuário (que é o login e não muda).
+    nome_exibicao = models.CharField("nome de exibição", max_length=60, blank=True)
+    sobre_mim = models.TextField("sobre mim", max_length=200, blank=True)
 
     objects = GerenciadorUsuario()
 
@@ -78,13 +81,19 @@ class Usuario(AbstractUser):
         return self.perfil == self.Perfil.PROFESSOR
 
     @property
+    def nome(self):
+        return self.nome_exibicao.strip() or self.get_full_name().strip() or self.username
+
+    @property
     def iniciais(self):
-        """Duas letras exibidas no avatar (ex.: "AT" para Állex Thierry)."""
-        nome = self.get_full_name().strip() or self.username
-        partes = nome.split()
+        """Duas letras do avatar: "ÁT" para "Állex Thierry" e também para "ÁllexThierry"."""
+        partes = self.nome.split()
         if len(partes) >= 2:
             return (partes[0][0] + partes[-1][0]).upper()
-        return nome[:2].upper()
+        maiusculas = [letra for letra in self.nome if letra.isupper()]
+        if len(maiusculas) >= 2:
+            return maiusculas[0] + maiusculas[-1]
+        return self.nome[:2].upper()
 
     def __str__(self):
         return self.username

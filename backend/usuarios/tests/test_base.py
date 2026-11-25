@@ -19,7 +19,7 @@ def test_usuario_novo_e_estudante_por_padrao():
 
     assert usuario.perfil == Usuario.Perfil.ESTUDANTE
     assert not usuario.eh_professor
-    assert usuario.cor_avatar == Usuario.CorAvatar.LARANJA_SINERGY
+    assert usuario.cor_avatar == Usuario.CorAvatar.AMARELO
 
 
 @pytest.mark.django_db

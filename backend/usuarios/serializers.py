@@ -11,16 +11,66 @@ from .models import Usuario, normalizar_login
 class UsuarioSerializer(serializers.ModelSerializer):
     """Dados do usuário logado devolvidos ao frontend."""
 
-    nome = serializers.SerializerMethodField()
+    nome = serializers.CharField(read_only=True)
     iniciais = serializers.CharField(read_only=True)
 
     class Meta:
         model = Usuario
-        fields = ("id", "username", "nome", "email", "perfil", "cor_avatar", "iniciais", "date_joined")
+        fields = (
+            "id",
+            "username",
+            "nome",
+            "nome_exibicao",
+            "email",
+            "perfil",
+            "cor_avatar",
+            "sobre_mim",
+            "iniciais",
+            "date_joined",
+        )
         read_only_fields = fields
 
-    def get_nome(self, usuario):
-        return usuario.get_full_name().strip() or usuario.username
+
+class PerfilSerializer(serializers.ModelSerializer):
+    """Edição do próprio perfil. Trocar o e-mail pede a senha atual."""
+
+    senha_atual = serializers.CharField(
+        write_only=True, required=False, allow_blank=True, trim_whitespace=False
+    )
+
+    class Meta:
+        model = Usuario
+        fields = ("nome_exibicao", "email", "cor_avatar", "sobre_mim", "senha_atual")
+        extra_kwargs = {
+            "cor_avatar": {"error_messages": {"invalid_choice": "Escolha uma das cores."}},
+            "sobre_mim": {"error_messages": {"max_length": "Use no máximo 200 caracteres."}},
+            "nome_exibicao": {"error_messages": {"max_length": "Use no máximo 60 caracteres."}},
+            "email": {"error_messages": {"invalid": "Digite um e-mail válido."}},
+        }
+
+    def validate_nome_exibicao(self, valor):
+        return " ".join((valor or "").split())
+
+    def validate_sobre_mim(self, valor):
+        return (valor or "").strip()
+
+    def validate_email(self, valor):
+        valor = (valor or "").strip().lower()
+        if valor and Usuario.objects.filter(email__iexact=valor).exclude(pk=self.instance.pk).exists():
+            raise serializers.ValidationError("Este e-mail já está em uso por outra conta.")
+        return valor
+
+    def validate(self, dados):
+        senha = dados.pop("senha_atual", "")
+        trocou_email = "email" in dados and dados["email"] != (self.instance.email or "").lower()
+        if trocou_email:
+            if not senha:
+                raise serializers.ValidationError(
+                    {"senha_atual": "Digite sua senha atual para trocar o e-mail."}
+                )
+            if not self.instance.check_password(senha):
+                raise serializers.ValidationError({"senha_atual": "Senha atual incorreta."})
+        return dados
 
 
 class _ConfirmacaoDeSenhaMixin:
@@ -36,6 +86,19 @@ class _ConfirmacaoDeSenhaMixin:
             password_validation.validate_password(senha, usuario)
         except ErroDeValidacaoDjango as erro:
             raise serializers.ValidationError({self.campo_senha: list(erro.messages)}) from erro
+
+
+class AlterarSenhaSerializer(_ConfirmacaoDeSenhaMixin, serializers.Serializer):
+    senha_atual = serializers.CharField(trim_whitespace=False)
+    senha = serializers.CharField(trim_whitespace=False)
+    confirmar_senha = serializers.CharField(trim_whitespace=False)
+
+    def validate(self, dados):
+        usuario = self.context["request"].user
+        if not usuario.check_password(dados["senha_atual"]):
+            raise serializers.ValidationError({"senha_atual": "Senha atual incorreta."})
+        self._validar_senhas(dados, usuario)
+        return dados
 
 
 class CadastroSerializer(_ConfirmacaoDeSenhaMixin, serializers.Serializer):

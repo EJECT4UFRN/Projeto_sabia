@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { IconeDashboard, IconeMateriaisAdm, IconePerguntas, IconeQuiz, IconeSair } from '../icones/Icones'
+import { IconeDashboard, IconeMateriaisAdm, IconePerguntas, IconeQuiz, IconeSair, IconeTurmas } from '../icones/Icones'
 import Logo from '../marca/Logo'
 import estilos from './MenuLateralAdm.module.css'
 
@@ -8,6 +8,7 @@ const itens = [
   { para: '/adm/perguntas', rotulo: 'Perguntas', Icone: IconePerguntas },
   { para: '/adm/quiz', rotulo: 'Quiz', Icone: IconeQuiz },
   { para: '/adm/materiais', rotulo: 'Materiais', Icone: IconeMateriaisAdm },
+  { para: '/adm/turmas', rotulo: 'Turmas', Icone: IconeTurmas },
 ]
 
 export default function MenuLateralAdm({ aberto, aoSair, aoNavegar }) {

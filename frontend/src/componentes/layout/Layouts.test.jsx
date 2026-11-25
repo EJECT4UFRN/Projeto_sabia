@@ -49,10 +49,10 @@ describe('Cabeçalho do estudante', () => {
 })
 
 describe('Rotas', () => {
-  it('redireciona a raiz para a tela de entrar', () => {
+  it('a raiz abre a página do projeto', () => {
     simularApi()
     renderizarApp('/')
-    expect(screen.getAllByRole('heading', { name: 'Entrar na conta' }).length).toBeGreaterThan(0)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Aprender pode ser a melhor jogada')
   })
 
   it('manda quem não está logado para a tela de entrar', () => {
@@ -77,7 +77,7 @@ describe('Painel do professor', () => {
   it('não deixa estudante entrar no painel', async () => {
     logarComo(ESTUDANTE)
     renderizarApp('/adm')
-    expect(await screen.findByRole('heading', { name: 'Jogar' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Entre no jogo. Digite o PIN.' })).toBeInTheDocument()
   })
 
   it('destaca só o Dashboard na raiz do painel e mostra o professor', async () => {

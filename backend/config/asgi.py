@@ -1,8 +1,4 @@
-"""Ponto de entrada ASGI: HTTP pelo Django e WebSocket pelo Channels.
-
-As rotas WebSocket das partidas ao vivo entram em `websocket_urlpatterns`
-na etapa da partida.
-"""
+"""Ponto de entrada ASGI: HTTP pelo Django e WebSocket (partidas ao vivo) pelo Channels."""
 
 import os
 
@@ -15,7 +11,7 @@ aplicacao_django = get_asgi_application()
 from channels.routing import ProtocolTypeRouter, URLRouter  # noqa: E402
 from channels.security.websocket import AllowedHostsOriginValidator  # noqa: E402
 
-websocket_urlpatterns = []
+from partidas.routing import websocket_urlpatterns  # noqa: E402
 
 application = ProtocolTypeRouter(
     {

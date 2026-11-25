@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { IconeDashboard, IconeMateriaisAdm, IconePerguntas, IconeQuiz } from '../icones/Icones'
+import { IconeDashboard, IconeMateriaisAdm, IconePerguntas, IconeQuiz, IconeTurmas } from '../icones/Icones'
 import estilos from './BarraInferiorAdm.module.css'
 
 const itens = [
@@ -7,6 +7,7 @@ const itens = [
   { para: '/adm/perguntas', rotulo: 'Perguntas', Icone: IconePerguntas },
   { para: '/adm/materiais', rotulo: 'Materiais', Icone: IconeMateriaisAdm },
   { para: '/adm/quiz', rotulo: 'Quiz', Icone: IconeQuiz },
+  { para: '/adm/turmas', rotulo: 'Turmas', Icone: IconeTurmas },
 ]
 
 /** Navegação do painel no celular (mockup "Footer" do painel administrativo). */

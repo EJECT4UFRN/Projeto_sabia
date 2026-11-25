@@ -25,7 +25,7 @@ class PaginacaoQuizzes(PageNumberPagination):
 class QuizViewSet(viewsets.ModelViewSet):
     """ "Meus jogos" do professor logado.
 
-    Filtros: ?busca= (título ou disciplina), ?disciplina=, ?status=rascunho|publicado,
+    Filtros: ?busca= (título ou disciplina), ?disciplina=<id>, ?status=rascunho|publicado,
     ?dificuldade=facil|medio|dificil, ?favorito=true. Paginação: ?pagina=N (6 por página).
     """
 
@@ -37,20 +37,24 @@ class QuizViewSet(viewsets.ModelViewSet):
         return QuizResumoSerializer if self.action == "list" else QuizSerializer
 
     def get_queryset(self):
-        quizzes = Quiz.objects.filter(dono=self.request.user)
+        quizzes = Quiz.objects.filter(dono=self.request.user).select_related("disciplina")
         if self.action != "list":
             return quizzes
 
-        quizzes = quizzes.annotate(perguntas_total=Count("itens")).order_by("-atualizado_em", "-id")
+        quizzes = quizzes.annotate(
+            perguntas_total=Count("itens", distinct=True),
+            partidas_realizadas=Count("partidas", filter=Q(partidas__estado="encerrada"), distinct=True),
+        ).order_by("-atualizado_em", "-id")
         filtros = self.request.query_params
 
         busca = " ".join(filtros.get("busca", "").split())
         if busca:
-            quizzes = quizzes.filter(Q(titulo__icontains=busca) | Q(disciplina__icontains=busca))
+            quizzes = quizzes.filter(
+                Q(titulo__icontains=busca) | Q(disciplina__chave__contains=busca.casefold())
+            )
 
-        disciplina = " ".join(filtros.get("disciplina", "").split())
-        if disciplina:
-            quizzes = quizzes.filter(disciplina_chave=disciplina.casefold())
+        if filtros.get("disciplina", "").isdigit():
+            quizzes = quizzes.filter(disciplina_id=filtros["disciplina"])
 
         if filtros.get("status") in Quiz.Status.values:
             quizzes = quizzes.filter(status=filtros["status"])
@@ -69,20 +73,6 @@ class QuizViewSet(viewsets.ModelViewSet):
         quiz.delete()
         for pergunta in exclusivas:
             pergunta.excluir_com_imagem()
-
-    @action(detail=False)
-    def disciplinas(self, request):
-        """Disciplinas já usadas nos quizzes do professor (para o filtro)."""
-        nomes = (
-            Quiz.objects.filter(dono=request.user)
-            .exclude(disciplina="")
-            .order_by("criado_em")
-            .values_list("disciplina", flat=True)
-        )
-        unicas = {}
-        for nome in nomes:
-            unicas.setdefault(nome.casefold(), nome)
-        return Response(sorted(unicas.values(), key=str.casefold))
 
     @action(detail=True, methods=["post"])
     @transaction.atomic
