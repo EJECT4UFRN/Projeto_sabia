@@ -1,6 +1,7 @@
 import { atualizarTokens, limparTokens, obterTokens } from './armazenamentoTokens'
 
-const BASE = '/api'
+// Em produção (Vercel) aponta para o backend; em desenvolvimento o proxy do Vite atende /api.
+const BASE = import.meta.env.VITE_API_URL ?? '/api'
 
 /** Erro da API com as mensagens por campo vindas do DRF. */
 export class ErroApi extends Error {
