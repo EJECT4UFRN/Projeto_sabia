@@ -1,0 +1,87 @@
+.texto {
+  margin: 0;
+  font-size: 15px;
+  color: #2a4d6a;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.turma {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.nome {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow-wrap: anywhere;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--cor-azul-escuro);
+}
+
+.professor {
+  font-weight: 400;
+  font-size: 13px;
+  color: #55707d;
+}
+
+.sair {
+  padding: 6px 12px;
+  border: 1px solid #fecaca;
+  border-radius: var(--raio-cartao);
+  background: #fef2f2;
+  font: inherit;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--cor-erro);
+  cursor: pointer;
+}
+
+.sair:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.linha {
+  display: flex;
+  gap: 12px;
+}
+
+.codigo {
+  max-width: 220px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.erro {
+  font-size: 13px;
+  color: var(--cor-erro-texto);
+}
+
+@media (max-width: 480px) {
+  .linha {
+    flex-direction: column;
+  }
+
+  .codigo {
+    max-width: none;
+  }
+}

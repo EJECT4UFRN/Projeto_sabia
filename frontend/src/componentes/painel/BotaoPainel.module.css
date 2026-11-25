@@ -1,0 +1,103 @@
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border: 0;
+  border-radius: var(--raio-cartao);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.08s ease,
+    filter 0.15s ease,
+    box-shadow 0.08s ease;
+}
+
+.botao:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.icone {
+  display: inline-flex;
+}
+
+.primario {
+  padding: 16px 32px;
+  background: var(--cor-laranja-sinergy);
+  box-shadow: 0 5px 0 var(--cor-laranja-sombra);
+  color: var(--cor-branco-puro);
+}
+
+.primario:hover {
+  filter: brightness(1.05);
+}
+
+.primario:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--cor-laranja-sombra);
+}
+
+.escuro {
+  padding: 10px 24px;
+  background: var(--cor-azul);
+  box-shadow: 0 4px 0 rgba(10, 55, 78, 0.16);
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--cor-branco-puro);
+}
+
+.escuro:active {
+  transform: translateY(2px);
+}
+
+.contorno {
+  border: 2px solid #c0d6ea;
+  background: var(--cor-branco-puro);
+  color: #2a4d6a;
+}
+
+.contorno:hover {
+  background: #f4f8fb;
+}
+
+.perigo {
+  background: #b81c00;
+  box-shadow: 0 5px 0 #7a1300;
+  color: var(--cor-branco-puro);
+}
+
+.perigo:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #7a1300;
+}
+
+/* Laranja → amarelo (modal "Cadastrar disciplina") */
+.gradiente {
+  background: var(--gradiente-cta);
+  box-shadow: 0 5px 0 var(--cor-laranja-sombra);
+  color: var(--cor-branco-puro);
+}
+
+.gradiente:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--cor-laranja-sombra);
+}
+
+/* Borda azul-escura (Cancelar do modal de disciplina, "Selecionar imagem") */
+.contornoAzul {
+  padding: 12px 22px;
+  border: 2px solid var(--cor-azul);
+  background: var(--cor-branco-puro);
+  color: var(--cor-azul);
+}
+
+.contornoAzul:hover {
+  background: #f4f8fb;
+}

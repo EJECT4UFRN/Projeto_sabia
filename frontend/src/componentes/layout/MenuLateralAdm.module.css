@@ -1,0 +1,91 @@
+.menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  width: var(--largura-menu-adm);
+  background: var(--cor-azul);
+  border-right: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.topo {
+  padding: 24px;
+}
+
+.navegacao {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 16px 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: var(--raio-medio);
+  background: transparent;
+  font-family: var(--fonte-titulo);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--cor-texto-invertido-suave);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--cor-branco-puro);
+}
+
+/* Item ativo: gradiente laranja → amarelo com faixa amarela à esquerda (mockup do painel). */
+.ativo,
+.ativo:hover {
+  background: var(--gradiente-cta);
+  box-shadow: inset 4px 0 0 var(--cor-amarelo-solar);
+  font-family: var(--fonte-texto);
+  font-weight: 600;
+  color: var(--cor-branco-puro);
+}
+
+.icone {
+  display: inline-flex;
+  width: 24px;
+  justify-content: center;
+}
+
+.rodape {
+  padding: 18px 16px 16px;
+  border-top: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.sair {
+  font-family: var(--fonte-texto);
+  color: var(--cor-erro);
+}
+
+.sair:hover {
+  background: rgba(186, 26, 26, 0.12);
+  color: #ff8a80;
+}
+
+@media (max-width: 960px) {
+  .menu {
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+
+  .aberto {
+    transform: translateX(0);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+  }
+}

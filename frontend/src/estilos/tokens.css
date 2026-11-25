@@ -1,0 +1,56 @@
+/* Tokens de design do Sabiá, extraídos das variáveis do arquivo Figma
+   "Sabiá - Projeto Sinergy - EJECT". Use sempre as variáveis em vez de
+   valores soltos nos componentes. */
+
+:root {
+  /* Cores da marca */
+  --cor-laranja-sinergy: #f26513;
+  --cor-laranja: #f2811d;
+  --cor-laranja-secundario: #f24405;
+  --cor-laranja-sombra: #b84309;
+  --cor-amarelo-solar: #fccc04;
+  --cor-amarelo-secundario: #ffaf02;
+  --cor-azul-escuro: #0a374e;
+  --cor-azul: #043c73;
+  --cor-azul-claro: #0787cb;
+  --cor-branco: #f2f2f2;
+  --cor-branco-puro: #ffffff;
+
+  /* Cores de apoio */
+  --cor-erro: #ba1a1a;
+  --cor-erro-texto: #b42318;
+  --cor-divisor: #e1ebef;
+  --cor-borda-suave: rgba(10, 55, 78, 0.14);
+  --cor-texto: var(--cor-azul-escuro);
+  --cor-texto-invertido-suave: rgba(255, 255, 255, 0.62);
+
+  /* Gradientes */
+  --gradiente-cta: linear-gradient(90deg, var(--cor-laranja-sinergy), var(--cor-amarelo-solar));
+  --gradiente-marca: linear-gradient(253deg, var(--cor-laranja-secundario) 12%, #fec601 86%);
+
+  /* Tipografia
+     PP Telegraf é uma fonte comercial e não está no Google Fonts: se a licença
+     for instalada no projeto ela é usada; senão cai para Outfit. */
+  --fonte-titulo: 'Exo 2', sans-serif;
+  --fonte-texto: 'Outfit', sans-serif;
+  --fonte-destaque: 'PP Telegraf', 'Outfit', sans-serif;
+
+  /* Raios */
+  --raio-pequeno: 4px;
+  --raio-medio: 6px;
+  --raio-botao: 7.5px;
+  --raio-cartao: 8px;
+
+  /* Sombras */
+  --sombra-cabecalho: 0 4px 2px rgba(0, 0, 0, 0.25);
+  --sombra-botao-primario: 0 6.25px 0 var(--cor-laranja-sombra);
+  --sombra-botao-secundario: 0 6.25px 0 rgba(10, 55, 78, 0.18);
+  --sombra-dropdown: 0 18px 25px rgba(10, 55, 78, 0.18);
+  --sombra-barra-inferior: 10px 4px 20px rgba(0, 0, 0, 0.25);
+
+  /* Layout */
+  --largura-menu-adm: 280px;
+  --altura-barra-inferior: 54px;
+  --largura-maxima: 1280px;
+  --margem-lateral: 16px;
+}

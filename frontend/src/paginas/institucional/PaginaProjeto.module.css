@@ -1,0 +1,956 @@
+/* "O projeto" / página inicial (mockup LP 29:4). Desktop: frames 104:1135 e 104:1166 (1440).
+   Celular: frames 29:848 e 29:883 (390). */
+
+.pagina {
+  --exo: var(--fonte-titulo);
+  --telegraf: var(--fonte-destaque);
+
+  overflow-x: clip;
+  background: var(--cor-branco);
+  color: var(--cor-azul-escuro);
+  font-family: var(--telegraf);
+}
+
+.azul {
+  color: var(--cor-azul);
+}
+
+.azulClaro {
+  color: var(--cor-azul-claro);
+}
+
+.laranja {
+  color: var(--cor-laranja-sinergy);
+}
+
+.laranjaForte {
+  color: var(--cor-laranja-secundario);
+}
+
+/* ----- botões do mockup (56px, sombra sólida) ----- */
+.botao {
+  display: inline-flex;
+  min-height: 56px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border: 1px solid transparent;
+  border-radius: var(--raio-medio);
+  font-family: var(--exo);
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    filter 0.15s ease;
+}
+
+.botao svg {
+  flex-shrink: 0;
+}
+
+.botao:hover {
+  filter: brightness(1.05);
+}
+
+.botao:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--sombra, transparent);
+}
+
+.botaoAzul {
+  --sombra: var(--cor-azul-escuro);
+  border-color: var(--cor-azul-escuro);
+  background: var(--cor-azul-claro);
+  box-shadow: 0 5px 0 var(--sombra);
+  color: var(--cor-azul-escuro);
+}
+
+.botaoClaro {
+  --sombra: var(--cor-laranja-sombra);
+  border-color: var(--cor-laranja-sombra);
+  background: var(--cor-branco);
+  box-shadow: 0 5px 0 var(--sombra);
+  color: var(--cor-laranja-secundario);
+}
+
+.botaoLaranja {
+  --sombra: var(--cor-laranja-sombra);
+  background: var(--cor-laranja-sinergy);
+  box-shadow: 0 5px 0 var(--sombra);
+  color: var(--cor-branco);
+}
+
+.botaoEscuro {
+  --sombra: var(--cor-azul-escuro);
+  background: var(--cor-azul);
+  box-shadow: 0 5px 0 var(--sombra);
+  color: var(--cor-branco);
+}
+
+/* ----- abertura: a lâmpada ----- */
+.abertura {
+  position: relative;
+  height: 1426px; /* a lâmpada (2088) começa 682px acima e as "Vantagens" vêm 20px depois da base */
+  isolation: isolate;
+}
+
+.lampada {
+  position: absolute;
+  z-index: -2;
+  top: -682px;
+  left: 50%;
+  width: 1760px;
+  max-width: none;
+  height: 2088px;
+  transform: translateX(-50%);
+  transform-origin: 50% 44%;
+  animation: acender 1.5s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+}
+
+/* Frames 1→3 do mockup: a lâmpada pequena sobe do pé da tela e cresce até ocupar tudo. */
+@keyframes acender {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(70vh) scale(0.18);
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(0) scale(0.18);
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+.formasAbertura {
+  position: absolute;
+  z-index: -1;
+  top: 34px;
+  left: calc(50% - 675px);
+  width: 1348px;
+  max-width: none;
+  animation: surgir 0.6s ease 1.2s both;
+}
+
+.soCelular {
+  display: none;
+}
+
+.conteudoAbertura {
+  display: flex;
+  max-width: 960px;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding: 100px 24px 0;
+  text-align: center;
+  animation: surgir 0.6s ease 1.1s both;
+}
+
+@keyframes surgir {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tituloAbertura {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: var(--exo);
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 67px;
+  letter-spacing: -1px;
+  color: var(--cor-branco);
+}
+
+.tituloEscuro {
+  color: var(--cor-azul-escuro);
+}
+
+.textoAbertura {
+  margin: 24px 0 0;
+  font-size: 24px;
+  line-height: 36px;
+  color: var(--cor-branco);
+}
+
+.botoesAbertura {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 24px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(242, 242, 242, 0.8);
+}
+
+.info svg {
+  color: var(--cor-azul-escuro);
+}
+
+/* ----- vantagens ----- */
+.vantagens {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 32px;
+  margin: 0;
+  padding: 0 20px 40px;
+  list-style: none;
+}
+
+.vantagem {
+  display: flex;
+  min-width: 201px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.valorVantagem {
+  font-family: var(--exo);
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 60px;
+  white-space: nowrap;
+}
+
+.textoVantagem {
+  font-size: 20px;
+  line-height: 32px;
+}
+
+/* ----- "Uma turma inteira ligada na mesma energia" ----- */
+.sobre {
+  position: relative;
+  overflow: hidden;
+  background: var(--cor-azul-escuro);
+  isolation: isolate;
+}
+
+.formasSobre {
+  position: absolute;
+  z-index: -1;
+  top: 9px;
+  left: calc(50% - 798px);
+  width: 1506px;
+  max-width: none;
+  filter: blur(6px);
+}
+
+.conteudoSobre {
+  display: flex;
+  max-width: 1248px;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+  text-align: center;
+}
+
+.tituloSobre,
+.tituloEstudos,
+.tituloChamada {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: var(--exo);
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 60px;
+}
+
+.textoSobre {
+  max-width: 730px;
+  margin: 16px 0 0;
+  font-size: 20px;
+  line-height: 32px;
+  color: var(--cor-branco);
+}
+
+.passos {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: 48px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.passo {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+}
+
+.passo:last-child {
+  flex: 0 0 auto;
+}
+
+.cartaoPasso {
+  --cor-passo: var(--cor-azul);
+  --cor-icone: var(--cor-azul);
+  --sombra-icone: var(--cor-azul-escuro);
+
+  display: flex;
+  width: 260px;
+  min-height: 248px;
+  flex-shrink: 0;
+  flex-direction: column;
+  padding: 24px 16px;
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco);
+  box-shadow: 0 5px 0 var(--cor-passo);
+}
+
+.passo2 .cartaoPasso {
+  --cor-passo: var(--cor-azul-claro);
+  --cor-icone: var(--cor-azul-claro);
+  --sombra-icone: var(--cor-azul);
+}
+
+.passo3 .cartaoPasso {
+  --cor-passo: var(--cor-laranja-sinergy);
+  --cor-icone: var(--cor-laranja-sinergy);
+  --sombra-icone: var(--cor-laranja-sombra);
+}
+
+.passo4 .cartaoPasso {
+  --cor-passo: var(--cor-laranja-secundario);
+  --cor-icone: var(--cor-laranja-secundario);
+  --sombra-icone: #892400;
+
+  box-shadow: 0 5px 0 var(--cor-laranja-sinergy);
+}
+
+.topoPasso {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.iconePasso {
+  display: inline-flex;
+  width: 64px;
+  height: 64px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--raio-medio);
+  background: var(--cor-icone);
+  box-shadow: 0 5px 0 var(--sombra-icone);
+  color: var(--cor-branco);
+}
+
+.iconePasso svg {
+  width: 26px;
+  height: 26px;
+}
+
+.numeroPasso {
+  font-family: var(--exo);
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 58px;
+  color: var(--cor-passo);
+}
+
+.tituloPasso {
+  margin: 0 0 8px;
+  font-family: var(--exo);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 29px;
+  color: var(--cor-azul-escuro);
+}
+
+.textoPasso {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(10, 55, 78, 0.75);
+}
+
+.conector {
+  flex-shrink: 0;
+  height: 162.5px;
+  margin: 0 auto;
+  color: var(--cor-azul-claro);
+}
+
+.passo2 .conector {
+  color: var(--cor-laranja-sinergy);
+}
+
+.passo3 .conector {
+  color: var(--cor-laranja-secundario);
+}
+
+.invertido {
+  transform: scaleY(-1);
+}
+
+/* ----- "O jogo acaba. A descoberta continua." ----- */
+.estudos {
+  position: relative;
+  display: flex;
+  max-width: 1248px;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding: 57px 24px 40px;
+}
+
+.cabecaEstudos {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 12px;
+}
+
+.tituloEstudos {
+  color: var(--cor-azul);
+}
+
+.textoEstudos {
+  margin: 0;
+  font-size: 20px;
+  line-height: 32px;
+}
+
+.passaroEstudos {
+  align-self: flex-start;
+  margin: -6px 0 -21px calc(50% + 51px);
+}
+
+.materiais {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  margin: 0 0 40px;
+  padding: 0;
+  list-style: none;
+}
+
+.material {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco);
+  box-shadow: 0 18px 50px rgba(10, 55, 78, 0.12);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.15s ease;
+}
+
+.material:hover {
+  transform: translateY(-3px);
+}
+
+.esqueleto {
+  min-height: 330px;
+  background: linear-gradient(100deg, #e6edf0 40%, #f4f7f8 50%, #e6edf0 60%) 0 0 / 200% 100%;
+  animation: brilho 1.4s linear infinite;
+}
+
+@keyframes brilho {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.corpoMaterial {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+}
+
+.linhaMaterial {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(10, 55, 78, 0.75);
+}
+
+.tipoMaterial {
+  font-family: var(--exo);
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--cor-laranja-sinergy);
+}
+
+.tituloMaterial {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--exo);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+.descricaoMaterial {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(10, 55, 78, 0.75);
+}
+
+.avisoMateriais {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 40px;
+  padding: 40px 24px;
+  border: 2px dashed rgba(10, 55, 78, 0.2);
+  border-radius: var(--raio-cartao);
+  text-align: center;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.avisoMateriais p {
+  margin: 0;
+}
+
+.tentarDeNovo {
+  padding: 8px 16px;
+  border: 0;
+  border-radius: var(--raio-medio);
+  background: var(--cor-azul);
+  font-family: var(--exo);
+  font-weight: 700;
+  color: var(--cor-branco);
+  cursor: pointer;
+}
+
+.estudos .botaoEscuro {
+  width: 312px;
+  max-width: 100%;
+  font-size: 20px;
+}
+
+/* ----- chamada final ----- */
+.chamada {
+  position: relative;
+  overflow: hidden;
+  margin-top: 40px;
+  background: var(--cor-azul);
+  isolation: isolate;
+}
+
+.formasChamada {
+  position: absolute;
+  z-index: -1;
+  top: -152px;
+  left: calc(50% - 863px);
+  width: 1644px;
+  max-width: none;
+}
+
+.conteudoChamada {
+  display: flex;
+  max-width: 600px;
+  min-height: 490px;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+  text-align: center;
+}
+
+.tituloChamada {
+  margin-top: 24px;
+  color: var(--cor-branco);
+}
+
+.textoChamada {
+  margin: 16px 0 0;
+  font-size: 20px;
+  line-height: 32px;
+  color: var(--cor-branco);
+}
+
+.botoesChamada {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  margin-top: 32px;
+}
+
+.botoesChamada .botao {
+  padding: 16px 20px;
+  font-size: 20px;
+}
+
+/* ----- rodapé ----- */
+.rodape {
+  padding: 53px 24px 16px;
+  background: var(--cor-azul-escuro);
+  color: var(--cor-branco-puro);
+}
+
+.colunasRodape {
+  display: grid;
+  max-width: 1146px;
+  grid-template-columns: 512px 356px 1fr;
+  margin: 0 auto;
+  padding-bottom: 26px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.marcaRodape {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.marcaRodape p {
+  max-width: 318px;
+  margin: 0;
+  font-family: var(--exo);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.colunaRodape {
+  padding-top: 15px;
+}
+
+.colunaRodape h2 {
+  margin: 0 0 24px;
+  font-family: var(--exo);
+  font-weight: 800;
+  font-size: 21px;
+  line-height: 30px;
+  text-transform: uppercase;
+}
+
+.colunaRodape ul {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.colunaRodape a {
+  font-family: var(--exo);
+  font-weight: 500;
+  font-size: 19.5px;
+  line-height: 26px;
+  color: var(--cor-texto-invertido-suave);
+  text-decoration: none;
+}
+
+.colunaRodape a:hover {
+  color: var(--cor-branco-puro);
+  text-decoration: underline;
+}
+
+.baseRodape {
+  display: flex;
+  justify-content: center;
+  padding-top: 27px;
+}
+
+/* ----- telas menores ----- */
+@media (max-width: 1240px) {
+  .passos {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .passo,
+  .passo:last-child {
+    flex: 0 0 auto;
+  }
+
+  .conector {
+    display: none;
+  }
+
+  .colunasRodape {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .materiais {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 420px;
+    gap: 24px;
+  }
+}
+
+/* Celular (mockup 390): a lâmpada encolhe para 720 de largura. */
+@media (max-width: 767px) {
+  .abertura {
+    height: 837px; /* lâmpada (854) começa 57px acima; "Vantagens" 40px depois */
+  }
+
+  .lampada {
+    top: -57px;
+    width: 720px;
+    height: 854px;
+  }
+
+  .soDesktop {
+    display: none;
+  }
+
+  .soCelular {
+    display: block;
+  }
+
+  .formasAbertura {
+    top: -3px;
+    left: calc(50% - 214px);
+    width: 409px;
+  }
+
+  .conteudoAbertura {
+    max-width: 392px;
+    align-items: stretch;
+    padding: 41px 20px 0;
+    text-align: left;
+  }
+
+  .tituloAbertura {
+    font-size: 36px;
+    line-height: 43px;
+  }
+
+  .textoAbertura {
+    margin-top: 16px;
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .botoesAbertura {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+  }
+
+  .info {
+    margin-top: 16px;
+  }
+
+  .vantagens {
+    display: grid;
+    max-width: 390px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0 auto;
+  }
+
+  .vantagem {
+    min-width: 0;
+    gap: 12px;
+  }
+
+  .valorVantagem {
+    font-size: 24px;
+    line-height: 20px;
+  }
+
+  .textoVantagem {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .conteudoSobre {
+    padding: 20px 20px 77px;
+  }
+
+  .tituloSobre,
+  .tituloEstudos,
+  .tituloChamada {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .textoSobre,
+  .textoEstudos,
+  .textoChamada {
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  /* Passos em zigue-zague, ligados por quadrados tracejados (mockup "Traços"). */
+  .passos {
+    position: relative;
+    max-width: 350px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 32px;
+    margin-top: 27px;
+  }
+
+  .passo:nth-child(even) {
+    align-self: flex-end;
+  }
+
+  .passo:nth-child(odd) {
+    align-self: flex-start;
+  }
+
+  .cartaoPasso {
+    position: relative;
+    z-index: 1;
+    min-height: 202px;
+  }
+
+  .passo:not(:last-child)::after {
+    position: absolute;
+    width: 222px;
+    height: 222px;
+    border: 4px dashed var(--cor-traco, var(--cor-azul-claro));
+    border-radius: 24px;
+    content: '';
+  }
+
+  .passo1::after {
+    margin: 103px 0 0 90px;
+  }
+
+  .passo2 {
+    --cor-traco: var(--cor-laranja-sinergy);
+  }
+
+  .passo2::after {
+    margin: 103px 0 0 -52px;
+  }
+
+  .passo3 {
+    --cor-traco: var(--cor-laranja-secundario);
+  }
+
+  .passo3::after {
+    margin: 103px 0 0 90px;
+  }
+
+  .passo {
+    position: relative;
+    align-items: flex-start;
+  }
+
+  .estudos {
+    padding: 40px 20px 32px;
+  }
+
+  .cabecaEstudos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .passaroEstudos {
+    align-self: flex-end;
+    margin: -1px 0 -21px;
+  }
+
+  .materiais {
+    max-width: 312px;
+  }
+
+  .estudos .botaoEscuro {
+    font-size: 16px;
+  }
+
+  .chamada {
+    margin-top: 0;
+  }
+
+  .formasChamada {
+    top: -60px;
+    left: calc(50% - 520px);
+    width: 1000px;
+  }
+
+  .conteudoChamada {
+    min-height: 320px;
+    padding: 24px 19px;
+  }
+
+  .botoesChamada {
+    gap: 24px;
+  }
+
+  .botoesChamada .botao {
+    padding: 16px 8px;
+    font-size: 16px;
+  }
+
+  .colunasRodape {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 24px;
+  }
+
+  .marcaRodape {
+    grid-column: 1 / -1;
+  }
+
+  .colunaRodape a {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lampada,
+  .formasAbertura,
+  .conteudoAbertura,
+  .esqueleto {
+    animation: none;
+  }
+
+  .botao,
+  .material {
+    transition: none;
+  }
+}

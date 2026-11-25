@@ -1,0 +1,55 @@
+.barra {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .barra {
+    display: block;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    height: var(--altura-barra-inferior);
+    padding-top: 2px;
+    background: var(--cor-branco);
+    border-top: 2px solid rgba(255, 255, 255, 0.12);
+    box-shadow: var(--sombra-barra-inferior);
+    backdrop-filter: blur(8px);
+  }
+}
+
+.lista {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 512px;
+  height: 52px;
+  margin: 0 auto;
+  padding: 8px 36px 8px 30px;
+  list-style: none;
+}
+
+/* O mockup usa rótulos de 6px; subimos para 10px para manter a leitura e o
+   alvo de toque acessíveis (extrapolação do mockup). */
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 44px;
+  min-height: 40px;
+  padding: 5px 9px;
+  border-radius: var(--raio-pequeno);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 12px;
+  color: var(--cor-azul-escuro);
+  text-decoration: none;
+}
+
+.ativo {
+  background: var(--cor-amarelo-solar);
+}

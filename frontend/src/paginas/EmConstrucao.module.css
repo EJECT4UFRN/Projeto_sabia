@@ -1,0 +1,30 @@
+.secao {
+  padding: 32px;
+  border: 2px dashed var(--cor-borda-suave);
+  border-radius: var(--raio-cartao);
+}
+
+.rotulo {
+  margin: 0 0 8px;
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1.2px;
+  color: var(--cor-laranja-sinergy);
+}
+
+.titulo {
+  margin: 0 0 8px;
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 36px;
+  letter-spacing: -1px;
+  color: var(--cor-azul-escuro);
+}
+
+.texto {
+  margin: 0;
+  font-size: 16px;
+  color: var(--cor-azul-escuro);
+}

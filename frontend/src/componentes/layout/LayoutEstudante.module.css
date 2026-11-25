@@ -1,0 +1,24 @@
+.layout {
+  min-height: 100vh;
+  background: var(--cor-branco);
+}
+
+.conteudo {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+@media (max-width: 960px) {
+  .conteudo {
+    padding: 32px var(--margem-lateral);
+  }
+
+  .comBarra .conteudo {
+    padding-bottom: calc(var(--altura-barra-inferior) + 32px);
+  }
+}
+
+.telaCheia {
+  width: 100%;
+}

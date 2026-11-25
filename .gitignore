@@ -1,5 +1,15 @@
-# Cada pasta (backend/ e frontend/) tem seu próprio .gitignore.
-.vscode/
-.idea/
+.env
+.venv*/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+backend/db.sqlite3
+backend/media/
+backend/staticfiles/
+node_modules/
+frontend/dist/
 .DS_Store
-Thumbs.db
+
+sabia.bundle

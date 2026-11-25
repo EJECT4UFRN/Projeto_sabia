@@ -1,0 +1,60 @@
+.logo {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.abaixo {
+  flex-direction: column;
+  align-items: center;
+}
+
+.lado {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.textos {
+  display: flex;
+  flex-direction: column;
+}
+
+.nome {
+  font-family: var(--fonte-texto);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.abaixo .nome {
+  font-size: 15px;
+}
+
+.lado .nome {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.nome-gradiente {
+  background: var(--gradiente-marca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nome-laranja {
+  color: var(--cor-laranja-secundario);
+}
+
+.nome-branco {
+  color: var(--cor-branco-puro);
+}
+
+.subtitulo {
+  white-space: nowrap;
+  font-family: var(--fonte-texto);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--cor-texto-invertido-suave);
+}

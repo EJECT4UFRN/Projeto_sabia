@@ -1,0 +1,134 @@
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid rgba(10, 55, 78, 0.13);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco-puro);
+  box-shadow: 0 12px 15px rgba(10, 55, 78, 0.08);
+}
+
+.busca {
+  position: relative;
+  display: flex;
+  min-width: 240px;
+  flex: 1;
+}
+
+.busca input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 12px 12px 40px;
+  border: 2px solid #a9c3d0;
+  border-radius: var(--raio-cartao);
+  background: #f8fbfc;
+  font-family: var(--fonte-titulo);
+  font-size: 15px;
+  color: #082f43;
+}
+
+.lupa {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  display: inline-flex;
+  color: #082f43;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.lupa svg {
+  width: 16px;
+  height: 16px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 2px solid #c0d6ea;
+  border-radius: 9999px;
+  background: var(--cor-branco-puro);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 13px;
+  color: #2a4d6a;
+  cursor: pointer;
+}
+
+.chipAtivo {
+  border-color: var(--cor-azul);
+  background: var(--cor-azul);
+  color: var(--cor-branco-puro);
+}
+
+.estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  border: 1px solid rgba(10, 55, 78, 0.13);
+  border-radius: var(--raio-cartao);
+  background: var(--cor-branco-puro);
+  text-align: center;
+}
+
+.estadoTitulo {
+  margin: 0;
+  font-family: var(--fonte-destaque);
+  font-weight: 800;
+  font-size: 22px;
+  color: #082f43;
+}
+
+.estadoTexto {
+  margin: 0 0 8px;
+  font-family: var(--fonte-titulo);
+  font-size: 14px;
+  color: #55707d;
+}
+
+.atualizando {
+  opacity: 0.55;
+}
+
+.rodape {
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.contagem {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 600;
+  font-size: 15px;
+  color: #2a4d6a;
+}
+
+@media (max-width: 767px) {
+  .busca {
+    min-width: 0;
+    flex-basis: 100%;
+  }
+
+  .rodape {
+    justify-content: center;
+  }
+
+  .contagem {
+    display: none;
+  }
+}

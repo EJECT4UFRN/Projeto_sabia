@@ -1,0 +1,73 @@
+.categoria {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 3.5px 12px;
+  border-radius: 9999px;
+  background: #cce0f2;
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  color: #2a4d6a;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dificuldade {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--fonte-titulo);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #082f43;
+}
+
+.ponto {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+}
+
+.ponto-facil {
+  background: #22c55e;
+}
+
+.ponto-medio {
+  background: #f97316;
+}
+
+.ponto-dificil {
+  background: #ef4444;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.pontoStatus {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: currentColor;
+}
+
+.ativa {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.inativa {
+  background: #c0d6ea;
+  color: #2a4d6a;
+}

@@ -1,0 +1,291 @@
+.pagina {
+  display: flex;
+  max-width: 1154px;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 auto;
+  padding: 68px 16px 64px;
+  font-family: var(--fonte-texto);
+  color: var(--cor-azul-escuro);
+}
+
+.noPainel {
+  padding-top: 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+  border: 2px solid rgba(10, 55, 78, 0.14);
+  border-radius: var(--raio-cartao);
+  background: #fff;
+  filter: drop-shadow(0 12px 17px rgba(10, 55, 78, 0.1));
+}
+
+.rotuloSecao {
+  margin: 0;
+  padding: 0;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #2a4d6a;
+}
+
+.identidade {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nome {
+  margin: 0;
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 28px;
+  overflow-wrap: anywhere;
+}
+
+.desde {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: rgba(42, 77, 106, 0.7);
+}
+
+.grupoCores {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.grupoCores > .rotuloSecao {
+  margin-bottom: 12px;
+}
+
+.cores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cor {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border: 3px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.cor input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.cor:has(input:checked) {
+  border-color: var(--cor-azul);
+  box-shadow: 0 0 0 3px rgba(4, 60, 115, 0.2);
+}
+
+.cor:has(input:focus-visible) {
+  outline: 3px solid rgba(7, 135, 203, 0.55);
+  outline-offset: 2px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rotulo {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #2a4d6a;
+}
+
+.entrada {
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 13px;
+  border: 1px solid #a9c3d0;
+  border-radius: var(--raio-cartao);
+  background: #fff;
+  font: inherit;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--cor-azul-escuro);
+}
+
+.entrada:read-only {
+  background: #f9fafb;
+}
+
+.entrada:focus-visible {
+  outline: 3px solid rgba(7, 135, 203, 0.45);
+  outline-offset: 1px;
+}
+
+.entrada[aria-invalid='true'] {
+  border-color: var(--cor-erro);
+}
+
+.sobre {
+  border-width: 2px;
+  resize: vertical;
+}
+
+.ajuda,
+.contador {
+  font-size: 12px;
+  color: rgba(42, 77, 106, 0.7);
+}
+
+.contador {
+  align-self: flex-end;
+}
+
+.erro {
+  font-size: 13px;
+  color: var(--cor-erro-texto);
+}
+
+.comBotao {
+  position: relative;
+}
+
+.comBotao .entrada {
+  padding-right: 48px;
+}
+
+.botaoEditar {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: inline-flex;
+  padding: 4px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: #b5b5b5;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.botaoEditar:hover {
+  color: var(--cor-azul-claro);
+}
+
+.campoSenhaEmail {
+  margin-top: 6px;
+  max-width: 420px;
+}
+
+.botaoSalvar {
+  display: flex;
+  min-height: 60px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  border: 0;
+  border-radius: var(--raio-cartao);
+  background: var(--gradiente-cta);
+  box-shadow: 0 5px 0 var(--cor-laranja-sombra);
+  font: inherit;
+  font-weight: 900;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.botaoSalvar svg {
+  width: 18px;
+  height: 18px;
+}
+
+.botaoSalvar:disabled,
+.botaoSecundario:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.gradeSenhas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.botaoSecundario {
+  align-self: flex-start;
+  padding: 12px 24px;
+  border: 2px solid var(--cor-azul-escuro);
+  border-radius: var(--raio-cartao);
+  background: #fff;
+  font: inherit;
+  font-weight: 700;
+  color: var(--cor-azul-escuro);
+  cursor: pointer;
+}
+
+.rodape {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 2px solid #c0d6ea;
+}
+
+.rodape button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  font-size: 24px;
+  color: #2a4d6a;
+  cursor: pointer;
+}
+
+.rodape svg {
+  width: 26px;
+  height: 26px;
+}
+
+@media (max-width: 760px) {
+  .pagina {
+    padding: 24px 16px 40px;
+  }
+
+  .cartao {
+    padding: 16px;
+  }
+
+  .gradeSenhas {
+    grid-template-columns: 1fr;
+  }
+
+  .botaoSecundario {
+    align-self: stretch;
+  }
+
+  .rodape button {
+    font-size: 18px;
+  }
+}

@@ -1,0 +1,46 @@
+.caixa {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 44px 12px 16px;
+  border: 2px solid #a9c3d0;
+  border-radius: var(--raio-cartao);
+  background: #e5f0f8;
+  font-family: var(--fonte-titulo);
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--cor-azul-escuro);
+  appearance: none;
+  cursor: pointer;
+}
+
+.select:focus-visible {
+  outline: 3px solid rgba(7, 135, 203, 0.45);
+  outline-offset: 1px;
+}
+
+.select[aria-invalid='true'] {
+  border-color: var(--cor-erro-texto);
+}
+
+.compacto .select {
+  min-height: 44px;
+  padding: 10px 40px 10px 14px;
+  border-radius: var(--raio-medio);
+  font-size: 14px;
+}
+
+.seta {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  display: inline-flex;
+  color: #6b7280;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
