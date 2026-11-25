@@ -40,7 +40,9 @@ export function esquecerParticipacao() {
 
 /** Endereço do WebSocket: o professor usa o token de acesso; o estudante, a chave da participação. */
 export function enderecoDaPartida(pin, { chave } = {}) {
-  const protocolo = window.location.protocol === 'https:' ? 'wss' : 'ws'
+  // Em produção o backend fica em outro domínio (VITE_API_URL); em desenvolvimento, no do próprio site.
+  const { protocol, host } = new URL(import.meta.env.VITE_API_URL ?? '/api', window.location.origin)
+  const protocolo = protocol === 'https:' ? 'wss' : 'ws'
   const consulta = chave ? `chave=${encodeURIComponent(chave)}` : `token=${encodeURIComponent(obterTokens()?.access ?? '')}`
-  return `${protocolo}://${window.location.host}/ws/partidas/${pin}/?${consulta}`
+  return `${protocolo}://${host}/ws/partidas/${pin}/?${consulta}`
 }

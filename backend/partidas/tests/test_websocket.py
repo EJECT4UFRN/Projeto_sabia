@@ -127,3 +127,17 @@ async def test_tempo_esgotado_encerra_sozinho():
     await asyncio.sleep(0.8)
     assert (await database_sync_to_async(Partida.objects.get)(pk=partida.pk)).estado == "resultado"
     await telao.disconnect()
+
+
+@pytest.mark.parametrize(
+    "origem, aceita", [(b"http://localhost:5173", True), (b"https://site-estranho.example", False)]
+)
+async def test_origem_da_conexao(origem, aceita):
+    _, partida = await preparar()
+    token = str(AccessToken.for_user(await database_sync_to_async(lambda: partida.professor)()))
+    comunicador = WebsocketCommunicator(
+        application, f"/ws/partidas/{partida.pin}/?token={token}", headers=[(b"origin", origem)]
+    )
+    conectado, _ = await comunicador.connect()
+    assert conectado is aceita
+    await comunicador.disconnect()
