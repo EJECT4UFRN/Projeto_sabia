@@ -1,0 +1,16 @@
+{
+  "planilha": "https://docs.google.com/spreadsheets/d/1HzFw6LGPhoeEaAa5T8tI5hPazUCsOoG3-0EpsuEKaTA",
+  "repositorio": "EJECT4UFRN/Projeto_sabia",
+  "ambientes": {
+    "local": {
+      "url": "http://localhost:5173",
+      "subir": "docker compose up -d",
+      "como_preparar_dados": "python manage.py shell no back-end",
+      "observacoes": "o e-mail de redefinição de senha aparece no log do back-end"
+    },
+    "publicado": {
+      "url": "https://projeto-sabia.vercel.app",
+      "observacoes": "servidor grátis dorme após 15 min e perde arquivos enviados; usar só este endereço"
+    }
+  }
+}
